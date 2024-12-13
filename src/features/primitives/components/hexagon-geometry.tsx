@@ -8,8 +8,8 @@ interface HexagonProps {
 export const Hexagon = ({ height, color }: HexagonProps) => {
   return (
     <mesh>
-      <cylinderGeometry args={[1, 1, height, 6]} />
-      <meshStandardMaterial color={color} />
+      <cylinderGeometry args={[0.6, 0.6, height, 6]} />
+      <meshStandardMaterial color={color} wireframe/>
     </mesh>
   );
 };

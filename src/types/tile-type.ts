@@ -1,8 +1,9 @@
 export type TileType = {
-  x: number;
-  y: number;
-  z: number;
+  id: number;
+  position: PositionType;
   color: string;
   height: number;
   type: string;
 }
+
+export type PositionType = [number, number, number];
