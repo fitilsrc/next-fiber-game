@@ -1,7 +1,7 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 
 import * as THREE from "three";
-import { MeshProps, ThreeElements, useFrame } from "@react-three/fiber";
+import { MeshProps } from "@react-three/fiber";
 import GUI from "lil-gui";
 
 interface BoxProps extends MeshProps{
@@ -38,7 +38,7 @@ export function Box({
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial
         ref={material}
-        color={hovered ? "hotpink" : "orange"}
+        color={"#268c12"}
       />
     </mesh>
   );
