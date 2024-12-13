@@ -35,10 +35,10 @@ export function Box({
       onPointerOver={(event) => setHover(true)}
       onPointerOut={(event) => setHover(false)}
     >
-      <boxGeometry args={[1, 1, 1]} />
+      <boxGeometry args={[0.3, 0.3, 0.3]} />
       <meshStandardMaterial
         ref={material}
-        color={"#268c12"}
+        color={"#cb107d"}
       />
     </mesh>
   );
