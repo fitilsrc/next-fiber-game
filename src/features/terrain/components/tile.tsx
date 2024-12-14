@@ -9,8 +9,11 @@ interface TileProps {
 }
 
 export const Tile = ({ tile, children }: TileProps) => {
+  const [x, y, z] = tile.position;
+  const position = new THREE.Vector3((x + (z % 2) * 0.5) * 1.75, y, z * 1.535);
+
   return (
-    <group position={new THREE.Vector3(...tile.position)} >
+    <group position={position} >
       <Hexagon height={tile.height} color={tile.color} />
       <group position={[0, tile.height / 2, 0]}>
         {children}
