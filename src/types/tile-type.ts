@@ -1,5 +1,5 @@
 export type TileType = {
-  id: number;
+  id: string;
   position: PositionType;
   color: string;
   height: number;

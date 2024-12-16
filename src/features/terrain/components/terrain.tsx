@@ -14,8 +14,8 @@ export const Terrain = ({
   ...props
 }: TerrainProps) => {
   const [size, setSize] = useState({
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 2.1,
   });
   const [material, setMaterial] = useState({
     color: 0x4da1ac
@@ -42,12 +42,11 @@ export const Terrain = ({
 
   return (
     <mesh
-      rotation={[-Math.PI / 2, 0, 0]}
       position={[0, -0.1, 0]}
       receiveShadow
     >
-      <planeGeometry
-        args={[size.width, size.height]}
+      <cylinderGeometry
+        args={[size.width, size.width, size.height]}
       />
       <meshStandardMaterial
         color={material.color}
