@@ -1,6 +1,7 @@
 import { TileType } from "@/types";
 import { v4 as uuidv4 } from 'uuid';
 import { createNoise2D } from "simplex-noise";
+import { TerrainType } from "@/components/providers/environment-provider";
 
 function isPointInsideCircle(x: number, y: number, radius: number) {
   const distanceSquared = Math.abs(x) ** 2 + Math.abs(y) ** 2;
@@ -29,6 +30,28 @@ function getTerrainColor (height: number) {
   return "#346D93";
 }
 
+function getTerrainTexture (height: number) {
+  if (height > 7) {
+    return TerrainType.ROCKY_SNOW;
+  }
+  if (height > 6 && height <= 7) {
+    return TerrainType.ROCK;
+  }
+  if (height > 5 && height <= 6) {
+    return TerrainType.AERIAL_ROCKS;
+  }
+  if (height > 3 && height <= 5) {
+    return TerrainType.ROCKY_TERRAIN;
+  }
+  if (height > 2 && height <= 3) {
+    return TerrainType.GRASS_ROCK;
+  }
+  if (height > 1 && height <= 2) {
+    return TerrainType.AERIAL_BEACH;
+  }
+  return TerrainType.AERIAL_BEACH;
+}
+
 export const generateTerrain = (radius: number): TileType[] => {
   const tiles: TileType[] = [];
   const noise2D = createNoise2D();
@@ -38,7 +61,7 @@ export const generateTerrain = (radius: number): TileType[] => {
       if (isPointInsideCircle(x, z, radius)) {
         const noise = (noise2D(x * 0.04, z * 0.04) + 0.6) * 0.5;
         const height = noise * 10;
-        const type = height > 3 && height<=6 ? "tree" : "sea";
+        const type = getTerrainTexture(height);
 
         const color = getTerrainColor(height);
         tiles.push({
@@ -70,7 +93,7 @@ export const generateForest = () => {
   const noise2D = createNoise2D();
 
   return trees.map(tree => {
-    const noise = (noise2D(tree.x * 0.5, tree.y * 0.5) + 1) * 0.5;
+    const noise = (noise2D(tree.x * 0.6, tree.y * 0.6) + 1) * 0.5;
     const height = noise * 10;
     return {
       x: tree.x,

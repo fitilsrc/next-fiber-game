@@ -3,6 +3,8 @@
 import { useDatGUI } from "@/hooks/useDatGUI";
 import { TileType } from "@/types";
 import {
+  Environment,
+  MapControls,
   OrbitControls,
   PerspectiveCamera,
   Stats,
@@ -14,43 +16,10 @@ import { Terrain } from "@/features/terrain/components/terrain";
 import { Tile } from "@/features/terrain/components/tile";
 import { generateTerrain } from "@/lib/generator";
 import { Forest } from "@/features/terrain/components/forest-model";
-import { DirectionalLight, DirectionalLightHelper, MathUtils } from "three";
-import { MutableRefObject, useRef } from "react";
-
-const LightWithHelper = () => {
-  const light = useRef<DirectionalLight>(null!);
-
-  useHelper(
-    light as MutableRefObject<DirectionalLight>,
-    DirectionalLightHelper,
-    3,
-    "red"
-  );
-
-  return (
-    <>
-      <hemisphereLight
-        color={"#ffff33"}
-        groundColor={"#ffffff"}
-        position={[55, 55, 0]}
-      />
-      <directionalLight
-        color={"#ffeae5"}
-        ref={light}
-        position={[55, 45, 45]}
-        intensity={1}
-        // shadow-mapSize={{ width: 2048, height: 2048 }}
-        // shadow-camera-top={50}
-        // shadow-camera-bottom={-50}
-        // shadow-camera-left={-50}
-        // shadow-camera-right={50}
-        // shadow-camera-far={3500}
-        // shadow-bias={-0.0001}
-        castShadow
-      />
-    </>
-  );
-};
+import { MathUtils } from "three";
+import { Suspense } from "react";
+import { LightEnvironment } from "./light-environment";
+import { EnvironmentProvider, TerrainType } from "./providers/environment-provider";
 
 export const CanvasSection = () => {
   const gui = useDatGUI();
@@ -64,27 +33,34 @@ export const CanvasSection = () => {
         dpr={[1, 2]}
         gl={{
           antialias: false,
-          powerPreference: "high-performance"
+          powerPreference: "high-performance",
         }}
       >
-        {/* <ambientLight intensity={Math.PI / 2} /> */}
-        <LightWithHelper />
+        <EnvironmentProvider>
+          <Suspense fallback={null}>
+            <fog attach="fog" args={["#f0f0f0", 0, 250]} />
+            <LightEnvironment />
 
-        <Terrain gui={gui} />
-        {tiles.map((tile) => (
-          <Tile key={tile.id} tile={tile}>
-            {tile.type === "tree" && Math.random() < 0.2 && (
-              <Forest tile={tile} />
-            )}
-          </Tile>
-        ))}
-        <PerspectiveCamera makeDefault position={[95, 35, 25]} />
-        <OrbitControls
-          minPolarAngle={MathUtils.degToRad(35)}
-          maxPolarAngle={MathUtils.degToRad(75)}
-          rotateSpeed={0.5}
-        />
+            <Terrain />
+            {tiles.map((tile) => (
+              <Tile key={tile.id} tile={tile}>
+                {tile.type === TerrainType.ROCKY_TERRAIN && Math.random() < 0.4 && (
+                  <Forest tile={tile} />
+                )}
+              </Tile>
+            ))}
+            <PerspectiveCamera makeDefault position={[95, 35, 25]} />
+            <MapControls
+              target={[0, 0, 0]}
+              dampingFactor={0.1}
+              zoomSpeed={0.25}
+              minPolarAngle={MathUtils.degToRad(0)}
+              maxPolarAngle={MathUtils.degToRad(90)}
+            />
+          </Suspense>
+        </EnvironmentProvider>
       </Canvas>
+
       <Stats />
     </section>
   );

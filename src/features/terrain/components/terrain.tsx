@@ -1,44 +1,15 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { memo } from "react";
 
 import * as THREE from "three";
-import { MeshProps } from "@react-three/fiber";
-import GUI from "lil-gui";
-import { DoubleSide } from "three";
+import { useLoader } from "@react-three/fiber";
+import { useEnvironment } from "@react-three/drei";
 
-interface TerrainProps extends MeshProps{
-  gui: MutableRefObject<GUI>;
-}
+export const Terrain = () => {
+  const water = useLoader(THREE.TextureLoader, "/assets/textures/water.jpg");
 
-export const Terrain = ({
-  gui,
-  ...props
-}: TerrainProps) => {
-  const [size, setSize] = useState({
-    width: 30,
-    height: 2.1,
-  });
-  const [material, setMaterial] = useState({
-    color: 0x4da1ac
-  })
-
-  const plane = useRef<THREE.PlaneGeometry>(null!);
-
-  useEffect(() => {
-    const folder = gui.current.addFolder("Terrain");
-    folder
-      .addColor(material, "color")
-      .name("Color")
-      .onChange(() => setMaterial({...material}));
-    folder
-      .add(size, "width", 1, 20, 1)
-      .name("Width")
-      .onChange(() => setSize({ ...size }));
-    folder
-      .add(size, "height", 1, 20, 1)
-      .name("Height")
-      .onChange(() => setSize({ ...size }));
-  }, [])
-
+  water.repeat = new THREE.Vector2(0.5, 0.5);
+  water.wrapS = THREE.RepeatWrapping;
+  water.wrapT = THREE.RepeatWrapping;
 
   return (
     <mesh
@@ -46,12 +17,22 @@ export const Terrain = ({
       receiveShadow
     >
       <cylinderGeometry
-        args={[size.width, size.width, size.height]}
+        args={[30, 30, 2.1]}
       />
-      <meshStandardMaterial
-        color={material.color}
-        side={DoubleSide}
+      <meshPhysicalMaterial
+        color={new THREE.Color("#537cc2").convertSRGBToLinear().multiplyScalar(3)}
+        ior={1.4}
+        transparent={true}
+        // transmission={1}
+        thickness={1.5}
+        envMapIntensity={0.4}
+        roughness={1}
+        metalness={0.025}
+        roughnessMap={water}
+        metalnessMap={water}
       />
     </mesh>
   );
 };
+
+export default memo(Terrain);

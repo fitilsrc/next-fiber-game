@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-import { Hexagon } from "@/features/primitives/components/hexagon-geometry";
+import Hexagon from "@/features/primitives/components/hexagon-geometry";
 import { TileType } from "@/types";
 
 interface TileProps {
@@ -14,7 +14,7 @@ export const Tile = ({ tile, children }: TileProps) => {
 
   return (
     <group position={position} >
-      <Hexagon height={tile.height} color={tile.color} />
+      <Hexagon height={tile.height} type={tile.type} />
       <group position={[0, tile.height / 2, 0]}>
         {children}
       </group>
