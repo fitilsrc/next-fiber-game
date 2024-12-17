@@ -44,7 +44,10 @@ export const CanvasSection = () => {
             <Terrain />
             {tiles.map((tile) => (
               <Tile key={tile.id} tile={tile}>
-                {tile.type === TerrainType.ROCKY_TERRAIN && Math.random() < 0.4 && (
+                {tile.type === TerrainType.GRASS_FOREST && (
+                  <Forest tile={tile} />
+                )}
+                {tile.type === TerrainType.GRASS_BROWN && Math.random() < 0.2  && (
                   <Forest tile={tile} />
                 )}
               </Tile>

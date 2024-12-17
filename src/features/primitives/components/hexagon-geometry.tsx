@@ -16,6 +16,11 @@ const Hexagon = ({ height, type }: HexagonProps) => {
     return hexagon;
   }, []);
 
+  const texture = state.textures[type];
+  texture.repeat = new THREE.Vector2(1.5, 1.5);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+
   return (
     <mesh geometry={geometry} receiveShadow castShadow>
       <meshStandardMaterial

@@ -3,13 +3,20 @@ import { createContext, useContext } from "react";
 import * as THREE from "three";
 
 enum TerrainType {
-  AERIAL_BEACH = "AERIAL_BEACH",
-  GRASS_ROCK = "GRASS_ROCK",
-  ROCKY_TERRAIN = "ROCKY_TERRAIN",
-  COAST_SAND = "COAST_SAND",
-  ROCKY_SNOW = "ROCKY_SNOW",
+  SAND= "SAND",
+  SAND_COAST = "SAND_COAST",
+  GRASS = "GRASS",
+  GRASS_FOREST = "GRASS_FOREST",
+  GRASS_ROCKY = "GRASS_ROCKY",
+  GRASS_BROWN = "GRASS_BROWN",
   ROCK = "ROCK",
-  AERIAL_ROCKS = "AERIAL_ROCKS",
+  SNOW = "SNOW",
+  // AERIAL_BEACH = "AERIAL_BEACH",
+
+  // ROCKY_TERRAIN = "ROCKY_TERRAIN",
+  //
+
+  // AERIAL_ROCKS = "AERIAL_ROCKS",
 }
 
 type EnvironmentState = {
@@ -29,31 +36,34 @@ const useEnvironmentContext = () => useContext(EnvironmentContext);
 function EnvironmentProvider({ children }: { children: React.ReactNode }) {
   const [
     sand,
-    rocky_grass,
-    forest,
-    snow,
-    rock,
+    sand_coast,
     grass,
-    aerial_rocks,
+    grass_forest,
+    grass_rocky,
+    grass_brown,
+    rock,
+    snow,
   ] = useTexture([
     "/assets/textures/sand.webp",
-    "/assets/textures/rocky_grass.webp",
-    "/assets/textures/forest.webp",
-    "/assets/textures/rocky_snow.webp",
-    "/assets/textures/rock.webp",
+    "/assets/textures/sand_coast.webp",
     "/assets/textures/grass.webp",
-    "/assets/textures/leaves.webp"
+    "/assets/textures/grass_forest.webp",
+    "/assets/textures/grass_rocky.webp",
+    "/assets/textures/grass_brown.webp",
+    "/assets/textures/rock.webp",
+    "/assets/textures/snow.webp",
   ]);
 
   const state: EnvironmentState = {
     textures: {
-      "AERIAL_BEACH": sand,
-      "GRASS_ROCK": grass,
-      "ROCKY_TERRAIN": rocky_grass,
-      "COAST_SAND": sand,
-      "ROCKY_SNOW": snow,
+      "SAND": sand,
+      "SAND_COAST": sand_coast,
+      "GRASS": grass,
+      "GRASS_FOREST": grass_forest,
+      "GRASS_ROCKY": grass_rocky,
+      "GRASS_BROWN": grass_brown,
       "ROCK": rock,
-      "AERIAL_ROCKS": aerial_rocks,
+      "SNOW": snow,
     },
   };
 

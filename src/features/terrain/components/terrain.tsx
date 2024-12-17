@@ -17,7 +17,7 @@ export const Terrain = () => {
       receiveShadow
     >
       <cylinderGeometry
-        args={[30, 30, 2.1]}
+        args={[30, 30, 1.1]}
       />
       <meshPhysicalMaterial
         color={new THREE.Color("#537cc2").convertSRGBToLinear().multiplyScalar(3)}

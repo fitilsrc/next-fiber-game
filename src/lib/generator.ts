@@ -8,48 +8,49 @@ function isPointInsideCircle(x: number, y: number, radius: number) {
   return distanceSquared <= radius ** 2;
 }
 
-function getTerrainColor (height: number) {
-  if (height > 7) {
-    return "#7F3E1C";
-  }
-  if (height > 6 && height <= 7) {
-    return "#BE5516";
-  }
-  if (height > 4 && height <= 6) {
-    return "#2E5020";
-  }
-  if (height > 3 && height <= 4) {
-    return "#376B12";
-  }
-  if (height > 2 && height <= 3) {
-    return "#85B43D";
-  }
-  if (height > 1 && height <= 2) {
-    return "#B8D99E";
-  }
-  return "#346D93";
+function isNumberInRange (number: number, min: number, max: number) {
+  return number >= min && number < max;
 }
 
-function getTerrainTexture (height: number) {
-  if (height > 7) {
-    return TerrainType.ROCKY_SNOW;
+function generateTerrainType (height: number) {
+  switch (true) {
+    case isNumberInRange(height, 0, 1):
+      return {
+        color: "#346D93",
+        type: TerrainType.SAND_COAST,
+      };
+    case isNumberInRange(height, 1, 2):
+      return {
+        color: "#346D93",
+        type: TerrainType.SAND,
+      };
+    case isNumberInRange(height, 2, 3):
+      return {
+        color: "#346D93",
+        type: TerrainType.GRASS,
+      };
+    case isNumberInRange(height, 3, 5):
+      return {
+        color: "#346D93",
+        type: Math.random() < 0.4 ? TerrainType.GRASS_FOREST : TerrainType.GRASS_ROCKY,
+      };
+    case isNumberInRange(height, 5, 6):
+      return {
+        color: "#346D93",
+        type: TerrainType.GRASS_BROWN,
+      };
+    case isNumberInRange(height, 6, 7):
+      return {
+        color: "#346D93",
+        type: TerrainType.ROCK,
+      };
+    default:
+      return {
+        color: "#346D93",
+        type: TerrainType.SNOW,
+      };
   }
-  if (height > 6 && height <= 7) {
-    return TerrainType.ROCK;
-  }
-  if (height > 5 && height <= 6) {
-    return TerrainType.AERIAL_ROCKS;
-  }
-  if (height > 3 && height <= 5) {
-    return TerrainType.ROCKY_TERRAIN;
-  }
-  if (height > 2 && height <= 3) {
-    return TerrainType.GRASS_ROCK;
-  }
-  if (height > 1 && height <= 2) {
-    return TerrainType.AERIAL_BEACH;
-  }
-  return TerrainType.AERIAL_BEACH;
+
 }
 
 export const generateTerrain = (radius: number): TileType[] => {
@@ -61,9 +62,8 @@ export const generateTerrain = (radius: number): TileType[] => {
       if (isPointInsideCircle(x, z, radius)) {
         const noise = (noise2D(x * 0.04, z * 0.04) + 0.6) * 0.5;
         const height = noise * 10;
-        const type = getTerrainTexture(height);
+        const { color, type} = generateTerrainType(height);
 
-        const color = getTerrainColor(height);
         tiles.push({
           id: uuidv4(),
           position: [x, 0, z],
