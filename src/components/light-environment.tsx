@@ -1,34 +1,24 @@
-import { Environment, Lightformer, Sky, useEnvironment } from "@react-three/drei";
-import React from "react";
+import { Environment, Lightformer, Sky, useEnvironment, useHelper } from "@react-three/drei";
+import React, { useRef } from "react";
+import * as THREE from "three";
 
 export const LightEnvironment = () => {
-  const envMap = useEnvironment({
-    files: "/assets/textures/envMap/envmap.hdr",
-  });
+  const dirLight = useRef<THREE.DirectionalLight>(null!);
+  useHelper(dirLight, THREE.DirectionalLightHelper, 1, "cyan");
 
   return (
     <>
-      <Environment map={envMap} environmentIntensity={1.1}>
-        <Lightformer
-          type="ring"
-          scale={50}
-          position={[55, 55, 0]}
-          color={"#ffff33"}
-          intensity={2.2}
-          castShadow
-        />
-        <Lightformer
-          type="rect"
-          scale={50}
-          position={[55, 45, 45]}
-          color={"#ffeae5"}
-          intensity={5.5}
-          castShadow
-        />
-      </Environment>
-      <Sky
-        distance={450000}
-        sunPosition={[55, 45, 45]}
+      <hemisphereLight
+        color={"#0000ff"}
+        groundColor={"#00ff00"}
+        intensity={1.6}
+      />
+      <directionalLight
+        ref={dirLight}
+        color={"#ffffff"}
+        position={[55, 55, 55]}
+        intensity={1.5}
+        castShadow
       />
     </>
   );

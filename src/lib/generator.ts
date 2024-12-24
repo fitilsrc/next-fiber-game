@@ -16,37 +16,37 @@ function generateTerrainType (height: number) {
   switch (true) {
     case isNumberInRange(height, 0, 1):
       return {
-        color: "#346D93",
+        color: "#798190",
         type: TerrainType.SAND_COAST,
       };
     case isNumberInRange(height, 1, 2):
       return {
-        color: "#346D93",
+        color: "#6C6E6F",
         type: TerrainType.SAND,
       };
     case isNumberInRange(height, 2, 3):
       return {
-        color: "#346D93",
+        color: "#555630",
         type: TerrainType.GRASS,
       };
     case isNumberInRange(height, 3, 5):
       return {
-        color: "#346D93",
+        color: "#595F2B",
         type: Math.random() < 0.4 ? TerrainType.GRASS_FOREST : TerrainType.GRASS_ROCKY,
       };
     case isNumberInRange(height, 5, 6):
       return {
-        color: "#346D93",
+        color: "#57483A",
         type: TerrainType.GRASS_BROWN,
       };
     case isNumberInRange(height, 6, 7):
       return {
-        color: "#346D93",
+        color: "#858882",
         type: TerrainType.ROCK,
       };
     default:
       return {
-        color: "#346D93",
+        color: "#7887A8",
         type: TerrainType.SNOW,
       };
   }

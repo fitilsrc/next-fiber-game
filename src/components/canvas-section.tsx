@@ -38,7 +38,7 @@ export const CanvasSection = () => {
       >
         <EnvironmentProvider>
           <Suspense fallback={null}>
-            <fog attach="fog" args={["#f0f0f0", 0, 250]} />
+            {/* <fog attach="fog" args={["#f0f0f0", 0, 250]} /> */}
             <LightEnvironment />
 
             <Terrain />
@@ -57,8 +57,10 @@ export const CanvasSection = () => {
               target={[0, 0, 0]}
               dampingFactor={0.1}
               zoomSpeed={0.25}
-              minPolarAngle={MathUtils.degToRad(0)}
-              maxPolarAngle={MathUtils.degToRad(90)}
+              minPolarAngle={MathUtils.degToRad(30)}
+              maxPolarAngle={MathUtils.degToRad(75)}
+              // minDistance={10}
+              // maxDistance={80}
             />
           </Suspense>
         </EnvironmentProvider>

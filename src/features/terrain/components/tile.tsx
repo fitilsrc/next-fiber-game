@@ -14,7 +14,7 @@ export const Tile = ({ tile, children }: TileProps) => {
 
   return (
     <group position={position} >
-      <Hexagon height={tile.height} type={tile.type} />
+      <Hexagon height={tile.height} color={tile.color} type={tile.type} />
       <group position={[0, tile.height / 2, 0]}>
         {children}
       </group>

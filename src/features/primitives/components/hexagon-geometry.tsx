@@ -4,10 +4,11 @@ import * as THREE from "three";
 
 interface HexagonProps {
   height: number;
+  color: string;
   type: TerrainType;
 }
 
-const Hexagon = ({ height, type }: HexagonProps) => {
+const Hexagon = ({ height, color, type }: HexagonProps) => {
   const { state } = useEnvironmentContext();
 
   const geometry = useMemo(() => {
@@ -17,14 +18,15 @@ const Hexagon = ({ height, type }: HexagonProps) => {
   }, []);
 
   const texture = state.textures[type];
-  texture.repeat = new THREE.Vector2(1.5, 1.5);
+  texture.repeat = new THREE.Vector2(1, 1);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
 
   return (
     <mesh geometry={geometry} receiveShadow castShadow>
       <meshStandardMaterial
-        map={state.textures[type]}
+        color={color}
+        // map={texture}
         flatShading
       />
     </mesh>

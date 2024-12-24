@@ -1,6 +1,8 @@
-import { useTexture } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
+import { useLoader } from "@react-three/fiber";
 import { createContext, useContext } from "react";
 import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 enum TerrainType {
   SAND= "SAND",
@@ -11,23 +13,30 @@ enum TerrainType {
   GRASS_BROWN = "GRASS_BROWN",
   ROCK = "ROCK",
   SNOW = "SNOW",
-  // AERIAL_BEACH = "AERIAL_BEACH",
-
-  // ROCKY_TERRAIN = "ROCKY_TERRAIN",
-  //
-
-  // AERIAL_ROCKS = "AERIAL_ROCKS",
 }
 
-type EnvironmentState = {
-  textures: Record<string, THREE.Texture>;
-};
+enum Model {
+  TREE = "TREE",
+  PINE_TREE = "PINE_TREE",
+  ROCK = "ROCK",
+  BUSH = "BUSH",
+}
+
+interface EnvironmentState {
+  textures: Record<string, THREE.Texture>
+  models: Record<string, {
+    nodes: {[name: string]: THREE.Object3D<THREE.Object3DEventMap>};
+    materials: {[name: string]: THREE.Material};
+    animations: THREE.AnimationClip[];
+  }>
+}
 
 const EnvironmentContext = createContext<{
   state: EnvironmentState;
 }>({
   state: {
     textures: {},
+    models: {},
   },
 });
 
@@ -54,16 +63,37 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     "/assets/textures/snow.webp",
   ]);
 
+  // const [tree] = useLoader(GLTFLoader, ["/assets/models/tree.glb"]);
+  const [
+    tree,
+    pineTree,
+  ] = useGLTF([
+    "/assets/models/tree.glb",
+    "/assets/models/pine-tree.glb",
+  ]);
+
   const state: EnvironmentState = {
     textures: {
-      "SAND": sand,
-      "SAND_COAST": sand_coast,
-      "GRASS": grass,
-      "GRASS_FOREST": grass_forest,
-      "GRASS_ROCKY": grass_rocky,
-      "GRASS_BROWN": grass_brown,
-      "ROCK": rock,
-      "SNOW": snow,
+      [TerrainType.SAND]: sand,
+      [TerrainType.SAND_COAST]: sand_coast,
+      [TerrainType.GRASS]: grass,
+      [TerrainType.GRASS_FOREST]: grass_forest,
+      [TerrainType.GRASS_ROCKY]: grass_rocky,
+      [TerrainType.GRASS_BROWN]: grass_brown,
+      [TerrainType.ROCK]: rock,
+      [TerrainType.SNOW]: snow,
+    },
+    models: {
+      [Model.TREE]: {
+        nodes: tree.nodes,
+        materials: tree.materials,
+        animations: tree.animations,
+      },
+      [Model.PINE_TREE]: {
+        nodes: pineTree.nodes,
+        materials: pineTree.materials,
+        animations: pineTree.animations,
+      },
     },
   };
 
@@ -74,4 +104,4 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export { useEnvironmentContext, EnvironmentProvider, TerrainType };
+export { useEnvironmentContext, EnvironmentProvider, TerrainType, Model };
