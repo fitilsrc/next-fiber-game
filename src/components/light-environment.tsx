@@ -9,16 +9,22 @@ export const LightEnvironment = () => {
   return (
     <>
       <hemisphereLight
-        color={"#0000ff"}
-        groundColor={"#00ff00"}
-        intensity={1.6}
+        color={"#f2e6d8"}
+        groundColor={"#ffffff"}
+        intensity={1}
       />
       <directionalLight
         ref={dirLight}
         color={"#ffffff"}
-        position={[55, 55, 55]}
-        intensity={1.5}
+        position={[55, 55, 0]}
+        intensity={2.5}
         castShadow
+        shadow-camera-left={-25}
+        shadow-camera-right={25}
+        shadow-camera-top={25}
+        shadow-camera-bottom={-25}
+        shadow-camera-near={0.5}
+        shadow-camera-far={100}
       />
     </>
   );

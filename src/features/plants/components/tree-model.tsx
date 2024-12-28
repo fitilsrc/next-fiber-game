@@ -2,7 +2,7 @@ import {
   Model,
   useEnvironmentContext,
 } from "@/components/providers/environment-provider";
-import { TileType } from "@/types";
+import { PlantType, TileType } from "@/types";
 import { memo } from "react";
 import { Mesh } from "three";
 
@@ -15,12 +15,12 @@ interface PineTreeProps {
 export const TreeModel = ({ position, height, tile }: PineTreeProps) => {
   const { state } = useEnvironmentContext();
 
-  const treeModel = Math.random() < 0.3 ? Model.TREE : Model.PINE_TREE;
+  const treeModel = tile.plant === PlantType.TREE ? Model.TREE : Model.PINE_TREE;
 
   const { nodes, materials } = state.models[treeModel];
   const [x, y] = position;
 
-  const scale = height * 0.04 + 0.1;
+  const scale = height + 0.1;
 
   return (
     <group dispose={null}>
@@ -38,6 +38,8 @@ export const TreeModel = ({ position, height, tile }: PineTreeProps) => {
                 position={node.position}
                 scale={node.scale}
                 material={materials[node.material.name]}
+                castShadow
+                receiveShadow
               />
             );
         })}

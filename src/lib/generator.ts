@@ -1,4 +1,4 @@
-import { TileType } from "@/types";
+import { AnimalType, EnvironmentType, PlantType, TileType } from "@/types";
 import { v4 as uuidv4 } from 'uuid';
 import { createNoise2D } from "simplex-noise";
 import { TerrainType } from "@/components/providers/environment-provider";
@@ -31,7 +31,7 @@ function generateTerrainType (height: number) {
       };
     case isNumberInRange(height, 3, 5):
       return {
-        color: "#595F2B",
+        color: "#374726",
         type: Math.random() < 0.4 ? TerrainType.GRASS_FOREST : TerrainType.GRASS_ROCKY,
       };
     case isNumberInRange(height, 5, 6):
@@ -41,17 +41,73 @@ function generateTerrainType (height: number) {
       };
     case isNumberInRange(height, 6, 7):
       return {
-        color: "#858882",
+        color: "#796B58",
         type: TerrainType.ROCK,
       };
     default:
       return {
-        color: "#7887A8",
+        color: "#7A7D86",
         type: TerrainType.SNOW,
       };
   }
 
 }
+
+function generatePlantType (type: TerrainType) {
+  switch (type) {
+    case TerrainType.GRASS_FOREST:
+      return {
+        plant: Math.random() < 0.5 ? PlantType.TREE : PlantType.PINE_TREE,
+      };
+    case TerrainType.GRASS_ROCKY:
+      return {
+        plant: Math.random() < 0.3 ? PlantType.BUSH : null,
+      };
+    case TerrainType.GRASS_BROWN:
+      return {
+        plant: Math.random() < 0.3 ? PlantType.PINE_TREE : null,
+      };
+    default:
+      return {
+        plant: null,
+      };
+  }
+}
+
+function generateAnimalType (type: TerrainType, plant: PlantType | null) {
+  switch (type) {
+    case TerrainType.GRASS_FOREST:
+      return {
+        animal: Math.random() < 0.3 ? AnimalType.DEER : null,
+      };
+    case TerrainType.GRASS_ROCKY:
+      return {
+        animal: Math.random() < 0.3 ? AnimalType.HORSE : null,
+      };
+    case TerrainType.GRASS_BROWN:
+      return {
+        animal: Math.random() < 0.3 ? AnimalType.SHEEP : null,
+      };
+    default:
+      return {
+        animal: null,
+      };
+  }
+}
+
+function generateEnvironmentType (type: TerrainType) {
+  switch (type) {
+    case TerrainType.ROCK:
+      return {
+        environment: Math.random() < 0.05 ? EnvironmentType.ROCK : null,
+      };
+    default:
+      return {
+        environment: null,
+      };
+  }
+}
+
 
 export const generateTerrain = (radius: number): TileType[] => {
   const tiles: TileType[] = [];
@@ -62,7 +118,14 @@ export const generateTerrain = (radius: number): TileType[] => {
       if (isPointInsideCircle(x, z, radius)) {
         const noise = (noise2D(x * 0.04, z * 0.04) + 0.6) * 0.5;
         const height = noise * 10;
-        const { color, type} = generateTerrainType(height);
+        const {
+          color,
+          type
+        } = generateTerrainType(height);
+
+        const { plant } = generatePlantType(type);
+        const { animal } = generateAnimalType(type, plant);
+        const { environment } = generateEnvironmentType(type);
 
         tiles.push({
           id: uuidv4(),
@@ -70,6 +133,10 @@ export const generateTerrain = (radius: number): TileType[] => {
           color: color,
           height: height,
           type: type,
+          plant: plant,
+          building: null,
+          animal: animal,
+          environment: environment,
         });
       }
     }
@@ -93,8 +160,8 @@ export const generateForest = () => {
   const noise2D = createNoise2D();
 
   return trees.map(tree => {
-    const noise = (noise2D(tree.x * 0.6, tree.y * 0.6) + 1) * 0.5;
-    const height = noise * 10;
+    const noise = (noise2D(tree.x * 0.6, tree.y * 0.6) + 1) * 0.6;
+    const height = noise;
     return {
       x: tree.x,
       y: tree.y,

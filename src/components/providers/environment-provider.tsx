@@ -18,6 +18,7 @@ enum TerrainType {
 enum Model {
   TREE = "TREE",
   PINE_TREE = "PINE_TREE",
+  ROCK_FORMATION = "ROCK_FORMATION",
   ROCK = "ROCK",
   BUSH = "BUSH",
 }
@@ -63,13 +64,14 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     "/assets/textures/snow.webp",
   ]);
 
-  // const [tree] = useLoader(GLTFLoader, ["/assets/models/tree.glb"]);
   const [
     tree,
     pineTree,
+    rockFormation,
   ] = useGLTF([
     "/assets/models/tree.glb",
     "/assets/models/pine-tree.glb",
+    "/assets/models/rock-formation.glb",
   ]);
 
   const state: EnvironmentState = {
@@ -93,6 +95,11 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
         nodes: pineTree.nodes,
         materials: pineTree.materials,
         animations: pineTree.animations,
+      },
+      [Model.ROCK_FORMATION]: {
+        nodes: rockFormation.nodes,
+        materials: rockFormation.materials,
+        animations: rockFormation.animations,
       },
     },
   };
