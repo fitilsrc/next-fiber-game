@@ -4,6 +4,7 @@ import { ThreeEvent } from "@react-three/fiber";
 import { Instance } from "@react-three/drei";
 
 import { TileType } from "@/types";
+import { useActiveTileStore } from "@/components/providers/active-tile-provider";
 
 interface TileProps {
   tiles: TileType[]
@@ -14,10 +15,11 @@ export const Tile = ({
   tiles,
   isMapped
 }: TileProps) => {
+  const { setActiveTile } = useActiveTileStore((state) => state);
 
   const onPointerEnter = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
-    const tile = tiles.find((tile) => tile.id === e.object.uuid);
+    setActiveTile(e.object.uuid);
   }
 
   const onClick = (e: ThreeEvent<MouseEvent>) => {
