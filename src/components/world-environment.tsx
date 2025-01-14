@@ -1,9 +1,22 @@
-import { Environment, Lightformer, Sky, useEnvironment, useHelper } from "@react-three/drei";
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
+import { useHelper } from "@react-three/drei";
+import { useControls } from "leva";
 
-export const LightEnvironment = () => {
+export const WorldEnvironment = () => {
   const dirLight = useRef<THREE.DirectionalLight>(null!);
+
+  const options = useMemo(() => {
+      return {
+        dayLight: { value: "#ebe7bf" },
+        nightLight: { value: 'lime' },
+        lightX: { value: 55 },
+        lightY: { value: 55 },
+        lightZ: { value: 0 },
+      }
+    }, [])
+    const environment = useControls('Environment', options)
+
   useHelper(dirLight, THREE.DirectionalLightHelper, 1, "cyan");
 
   return (
@@ -15,8 +28,8 @@ export const LightEnvironment = () => {
       />
       <directionalLight
         ref={dirLight}
-        color={"#ffffff"}
-        position={[55, 55, 0]}
+        color={environment.dayLight}
+        position={[environment.lightX, environment.lightY, environment.lightZ]}
         intensity={2.5}
         castShadow
         shadow-camera-left={-25}

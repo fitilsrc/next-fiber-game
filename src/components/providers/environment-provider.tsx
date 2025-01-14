@@ -1,11 +1,11 @@
+import { generateTerrain } from "@/lib/generator";
+import { TileType } from "@/types";
 import { useGLTF, useTexture } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 enum TerrainType {
-  SAND= "SAND",
+  SAND = "SAND",
   SAND_COAST = "SAND_COAST",
   GRASS = "GRASS",
   GRASS_FOREST = "GRASS_FOREST",
@@ -24,12 +24,16 @@ enum Model {
 }
 
 interface EnvironmentState {
-  textures: Record<string, THREE.Texture>
-  models: Record<string, {
-    nodes: {[name: string]: THREE.Object3D<THREE.Object3DEventMap>};
-    materials: {[name: string]: THREE.Material};
-    animations: THREE.AnimationClip[];
-  }>
+  textures: Record<string, THREE.Texture>;
+  models: Record<
+    string,
+    {
+      nodes: { [name: string]: THREE.Object3D<THREE.Object3DEventMap> };
+      materials: { [name: string]: THREE.Material };
+      animations: THREE.AnimationClip[];
+    }
+  >;
+  tiles: TileType[];
 }
 
 const EnvironmentContext = createContext<{
@@ -38,6 +42,7 @@ const EnvironmentContext = createContext<{
   state: {
     textures: {},
     models: {},
+    tiles: [],
   },
 });
 
@@ -64,28 +69,16 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     "/assets/textures/snow.webp",
   ]);
 
-  const [
-    tree,
-    pineTree,
-    rockFormation,
-  ] = useGLTF([
+  const [tree, pineTree, rockFormation] = useGLTF([
     "/assets/models/tree.glb",
     "/assets/models/pine-tree.glb",
     "/assets/models/rock-formation.glb",
   ]);
 
-  const state: EnvironmentState = {
-    textures: {
-      [TerrainType.SAND]: sand,
-      [TerrainType.SAND_COAST]: sand_coast,
-      [TerrainType.GRASS]: grass,
-      [TerrainType.GRASS_FOREST]: grass_forest,
-      [TerrainType.GRASS_ROCKY]: grass_rocky,
-      [TerrainType.GRASS_BROWN]: grass_brown,
-      [TerrainType.ROCK]: rock,
-      [TerrainType.SNOW]: snow,
-    },
-    models: {
+  const tiles: TileType[] = generateTerrain(15);
+
+  const models = useMemo(
+    () => ({
       [Model.TREE]: {
         nodes: tree.nodes,
         materials: tree.materials,
@@ -101,7 +94,27 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
         materials: rockFormation.materials,
         animations: rockFormation.animations,
       },
-    },
+    }),
+    []
+  );
+
+  const textures = useMemo(
+    () => ({
+      [TerrainType.SAND]: sand,
+      [TerrainType.SAND_COAST]: sand_coast,
+      [TerrainType.GRASS]: grass,
+      [TerrainType.GRASS_FOREST]: grass_forest,
+      [TerrainType.GRASS_ROCKY]: grass_rocky,
+      [TerrainType.GRASS_BROWN]: grass_brown,
+      [TerrainType.ROCK]: rock,
+      [TerrainType.SNOW]: snow,
+    }), []
+  )
+
+  const state: EnvironmentState = {
+    textures,
+    models,
+    tiles,
   };
 
   return (
@@ -110,5 +123,11 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     </EnvironmentContext.Provider>
   );
 }
+
+useGLTF.preload([
+  "/assets/models/tree.glb",
+  "/assets/models/pine-tree.glb",
+  "/assets/models/rock-formation.glb",
+]);
 
 export { useEnvironmentContext, EnvironmentProvider, TerrainType, Model };

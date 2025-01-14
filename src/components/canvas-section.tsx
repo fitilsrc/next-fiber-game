@@ -1,40 +1,24 @@
 "use client";
 
-import { useDatGUI } from "@/hooks/useDatGUI";
-import { EnvironmentType, PlantType, TileType } from "@/types";
+import { Suspense } from "react";
+
 import {
-  Environment,
   MapControls,
-  OrbitControls,
   PerspectiveCamera,
-  Stats,
-  useHelper,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Perf } from 'r3f-perf';
 
-import { Terrain } from "@/features/terrain/components/terrain";
-import Tile from "@/features/terrain/components/tile";
-import { generateTerrain } from "@/lib/generator";
-import { Forest } from "@/features/terrain/components/forest-model";
-import { MathUtils } from "three";
-import { Suspense } from "react";
-import { LightEnvironment } from "./light-environment";
 import {
   EnvironmentProvider,
-  TerrainType,
 } from "./providers/environment-provider";
-import RockModel from "@/features/terrain/components/rock-model";
+import { WorldEnvironment } from './world-environment';
+import { MapTiles } from '@/features/map/components/map-tiles';
+import OceanModel from "@/features/terrain/components/ocean-model";
+import { ConiferForests } from '@/features/terrain/components/conifer-forests-model';
+import { DeciduousForests } from "@/features/terrain/components/deciduous-forests-model";
 
 export const CanvasSection = () => {
-  const gui = useDatGUI();
-
-  const tiles: TileType[] = generateTerrain(15);
-
-  const forestCheck = (tile: TileType) =>
-    tile.type === TerrainType.GRASS_FOREST ||
-    tile.plant === PlantType.TREE ||
-    tile.plant === PlantType.PINE_TREE;
-
   console.log("start")
 
   return (
@@ -49,33 +33,25 @@ export const CanvasSection = () => {
       >
         <EnvironmentProvider>
           <Suspense fallback={null}>
-            <LightEnvironment />
-
-            <Terrain />
-            {tiles.map((tile) => {
-              const isForest = forestCheck(tile);
-              return (
-                <Tile key={tile.id} tile={tile}>
-                  {isForest && <Forest tile={tile} />}
-                  {tile.environment === EnvironmentType.ROCK  && (
-                    <RockModel tile={tile}/>
-                  )}
-                </Tile>
-              );
-            })}
-            <PerspectiveCamera makeDefault position={[55, 35, 25]} />
+            <WorldEnvironment />
+            <OceanModel />
+            <MapTiles />
+            <ConiferForests />
+            <DeciduousForests />
+            <PerspectiveCamera makeDefault position={[45, 20, 25]} />
             <MapControls
               target={[0, 0, 0]}
               dampingFactor={0.1}
               zoomSpeed={0.25}
-              minPolarAngle={MathUtils.degToRad(30)}
-              maxPolarAngle={MathUtils.degToRad(75)}
             />
           </Suspense>
         </EnvironmentProvider>
+        <axesHelper args={[40]} />
+        <Perf
+          position="top-left"
+          matrixUpdate
+        />
       </Canvas>
-
-      <Stats />
     </section>
   );
 };
