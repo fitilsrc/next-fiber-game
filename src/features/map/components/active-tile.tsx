@@ -1,34 +1,69 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from "react";
 
 import * as THREE from "three";
-import { useActiveTileStore } from '@/components/providers/active-tile-provider';
-import { useEnvironmentContext } from '@/components/providers/environment-provider';
-import { prepareHexagonalCoordinates } from '@/lib/utils';
+import { extend, ShaderMaterialProps, ThreeEvent } from "@react-three/fiber";
 
-const ActiveTile = () => {
-  const { id } = useActiveTileStore((state) => state);
-  const { state } = useEnvironmentContext();
+import { ActiveMaterial } from "@/features/map/components/materials/active.material";
+import { useActiveTileStore } from "@/components/providers/active-tile-provider";
 
-  const hexagonTop = useMemo(() => {
+type Uniforms = {
+  uTime: number;
+  uOpacity: number;
+  uColor: THREE.Color;
+};
+
+extend({ ActiveMaterial });
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      activeMaterial: ShaderMaterialProps & Partial<Uniforms>;
+    }
+  }
+}
+
+interface ActiveTileProps {
+  position: THREE.Vector3;
+  uuid: string | null | undefined;
+}
+
+const ActiveTile = ({ position, uuid }: ActiveTileProps) => {
+  const { id, setActiveTile } = useActiveTileStore((state) => state);
+  const [opacity, setOpacity] = useState(0);
+
+  const hexagon = useMemo(() => {
     return new THREE.CylinderGeometry(1, 1, 0, 6);
   }, []);
 
-  const tile = state.tiles.find((tile) => tile.id === id);
+  const handlePointerEnter = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    setOpacity(0.4);
+  };
 
-  if (!id || !tile) return null;
+  const handlePointerOut = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    setOpacity(0.0);
+  };
 
-  const [x, y, z] = tile.position;
-  const height = tile.height + 0.05;
+  const onClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation();
+    setActiveTile(e.object.uuid);
+  };
 
   return (
-    <group position={prepareHexagonalCoordinates(x, height, z)}>
+    <group
+      position={position}
+    >
       <mesh
-        geometry={hexagonTop}
+        geometry={hexagon}
+        onPointerEnter={handlePointerEnter}
+        onPointerOut={handlePointerOut}
+        onClick={onClick}
       >
-        <meshStandardMaterial color={"red"} />
+        <activeMaterial transparent uOpacity={opacity} />
       </mesh>
     </group>
-  )
-}
+  );
+};
 
 export default memo(ActiveTile);

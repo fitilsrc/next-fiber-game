@@ -17,7 +17,7 @@ import { MapTiles } from '@/features/map/components/map-tiles';
 import OceanModel from "@/features/terrain/components/ocean-model";
 import { ConiferForests } from '@/features/terrain/components/conifer-forests-model';
 import { DeciduousForests } from "@/features/terrain/components/deciduous-forests-model";
-import ActiveTile from "@/features/map/components/active-tile";
+import { InteractiveLayer } from "@/features/map/components/interactive-layer";
 
 export const CanvasSection = () => {
   console.log("start")
@@ -37,9 +37,9 @@ export const CanvasSection = () => {
             <WorldEnvironment />
             <OceanModel />
             <MapTiles />
-            <ActiveTile />
             <ConiferForests />
             <DeciduousForests />
+            <InteractiveLayer />
             <PerspectiveCamera makeDefault position={[45, 20, 25]} />
             <MapControls
               target={[0, 0, 0]}

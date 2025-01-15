@@ -1,4 +1,4 @@
-import { Fragment, useRef } from "react";
+import { Fragment } from "react";
 import * as THREE from "three";
 import { ThreeEvent } from "@react-three/fiber";
 import { Instance } from "@react-three/drei";
@@ -15,17 +15,6 @@ export const Tile = ({
   tiles,
   isMapped
 }: TileProps) => {
-  const { setActiveTile } = useActiveTileStore((state) => state);
-
-  const onPointerEnter = (e: ThreeEvent<PointerEvent>) => {
-    e.stopPropagation();
-    setActiveTile(e.object.uuid);
-  }
-
-  const onClick = (e: ThreeEvent<MouseEvent>) => {
-    e.stopPropagation();
-    const tile = tiles.find((tile) => tile.id === e.object.uuid);
-  }
 
   return (
     <>
@@ -54,8 +43,6 @@ export const Tile = ({
               uuid={tile.id}
               color={color}
               scale={scale}
-              onPointerEnter={onPointerEnter}
-              onClick={onClick}
             />
           </Fragment>
         );

@@ -1,14 +1,14 @@
 import * as THREE from "three";
 import { shaderMaterial } from "@react-three/drei";
 
-import fragmentShader from './terrain.shader.frag';
-import vertexShader from './terrain.shader.vert';
+import fragmentShader from './active.shader.frag';
+import vertexShader from './active.shader.vert';
 
-export const TerrainMaterial = shaderMaterial(
+export const ActiveMaterial = shaderMaterial(
   {
     uTime: 0,
+    uOpacity: 0.1,
     uColor: new THREE.Color(0.0, 0.0, 0.0),
-    uTexture: new THREE.Texture(),
   },
   vertexShader,
   fragmentShader
