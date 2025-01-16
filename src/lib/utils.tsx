@@ -5,5 +5,5 @@ export const prepareHexagonalCoordinates = (
   y: number,
   z: number
 ): THREE.Vector3 => {
-  return new THREE.Vector3((x + (z % 2) * 0.5) * 1.75, Math.abs(y), z * 1.535);
+  return new THREE.Vector3((x + (z % 2) * 0.5) * 1.75, y, z * 1.535);
 };

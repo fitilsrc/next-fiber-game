@@ -17,7 +17,7 @@ export const ConiferForests = () => {
 
   let pineTreeCrown = new THREE.BufferGeometry();
 
-  Object.values(nodes).forEach((node, index) => {
+  Object.values(nodes).forEach((node) => {
     if (node instanceof THREE.Mesh) {
       geometries.push(node.geometry);
     }

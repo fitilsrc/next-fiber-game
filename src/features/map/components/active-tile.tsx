@@ -1,10 +1,14 @@
 import { memo, useMemo, useState } from "react";
 
 import * as THREE from "three";
-import { extend, ShaderMaterialProps, ThreeEvent } from "@react-three/fiber";
+import {
+  extend,
+  ShaderMaterialProps,
+  ThreeEvent,
+} from "@react-three/fiber";
 
 import { ActiveMaterial } from "@/features/map/components/materials/active.material";
-import { useActiveTileStore } from "@/components/providers/active-tile-provider";
+import { hexagonFlat } from "@/features/map/components/geometry";
 
 type Uniforms = {
   uTime: number;
@@ -28,12 +32,7 @@ interface ActiveTileProps {
 }
 
 const ActiveTile = ({ position, uuid }: ActiveTileProps) => {
-  const { id, setActiveTile } = useActiveTileStore((state) => state);
   const [opacity, setOpacity] = useState(0);
-
-  const hexagon = useMemo(() => {
-    return new THREE.CylinderGeometry(1, 1, 0, 6);
-  }, []);
 
   const handlePointerEnter = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
@@ -45,24 +44,16 @@ const ActiveTile = ({ position, uuid }: ActiveTileProps) => {
     setOpacity(0.0);
   };
 
-  const onClick = (e: ThreeEvent<MouseEvent>) => {
-    e.stopPropagation();
-    setActiveTile(e.object.uuid);
-  };
-
   return (
-    <group
+    <mesh
+      uuid={!uuid ? undefined : uuid}
+      geometry={hexagonFlat}
+      onPointerEnter={handlePointerEnter}
+      onPointerOut={handlePointerOut}
       position={position}
     >
-      <mesh
-        geometry={hexagon}
-        onPointerEnter={handlePointerEnter}
-        onPointerOut={handlePointerOut}
-        onClick={onClick}
-      >
-        <activeMaterial transparent uOpacity={opacity} />
-      </mesh>
-    </group>
+      <activeMaterial transparent uOpacity={opacity} />
+    </mesh>
   );
 };
 

@@ -5,7 +5,7 @@ uniform float uTime;
 uniform float uOpacity;
 
 void main() {
-    float thickness = 0.02;
+    float thickness = 0.01;
 
     vUv = uv;
     vec3 newPosition = position + normal * thickness;
