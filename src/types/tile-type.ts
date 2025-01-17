@@ -1,5 +1,12 @@
 import { TerrainType } from "@/components/providers/environment-provider";
 
+export type HeightMapType = {
+  x: number;
+  y: number;
+  height: number;
+};
+
+
 export type TileType = {
   id: string;
   position: PositionType;

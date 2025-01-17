@@ -1,4 +1,4 @@
-import { AnimalType, EnvironmentType, PlantType, TileType } from "@/types";
+import { AnimalType, EnvironmentType, HeightMapType, PlantType, TileType } from "@/types";
 import { v4 as uuidv4 } from 'uuid';
 import { createNoise2D } from "simplex-noise";
 import { TerrainType } from "@/components/providers/environment-provider";
@@ -144,12 +144,8 @@ export const generateTerrain = (radius: number): TileType[] => {
   return tiles;
 }
 
-export const generateForest = () => {
-  const trees: Array<{
-    x: number;
-    y: number;
-    height: number;
-  }> = [
+export const heightMap = (tiles: TileType[]): HeightMapType[][] => {
+  const treesMap: HeightMapType[] = [
     { x: 0, y: 0, height: 0.5 },
     { x: -0.65, y: 0.25, height: 0.5 },
     { x: -0.15, y: 0.65, height: 0.5 },
@@ -157,15 +153,18 @@ export const generateForest = () => {
     { x: 0.45, y: -0.15, height: 0.5 },
     { x: 0.15, y: -0.65, height: 0.5 },
   ];
+
   const noise2D = createNoise2D();
 
-  return trees.map(tree => {
-    const noise = (noise2D(tree.x * 0.6, tree.y * 0.6) + 1) * 0.6;
-    const height = noise;
-    return {
-      x: tree.x,
-      y: tree.y,
-      height: height,
-    }
-  });
+  return tiles.map((tile) => {
+    const [x, y, z] = tile.position;
+    return treesMap.map((tree) => {
+      const height = (noise2D((x + tree.x) * 0.6, (y + tree.y) * 0.6) + 1) * 0.6;
+      return {
+        x: tree.x,
+        y: tree.y,
+        height: height,
+      }
+    })
+  })
 }
