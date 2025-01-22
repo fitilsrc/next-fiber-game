@@ -1,5 +1,6 @@
 import { createStore } from "zustand/vanilla";
 import * as THREE from "three";
+import { Size } from "@react-three/fiber";
 
 export type ActiveTileState = {
   id: string | undefined | null;
@@ -9,6 +10,7 @@ export type ActiveTileState = {
 
 export type ActiveTileActions = {
   setActiveTile: (id: string, position: THREE.Vector3) => void
+  setHoveredTile: (id: string) => void
   resetActiveTile: () => void
 }
 
@@ -33,6 +35,7 @@ export const createActiveTileStore = (initialState: ActiveTileState = defaultAct
   return createStore<ActiveTileStore>()((set) => ({
     ...initialState,
     setActiveTile: (id, position) => set(() => ({ id: id, position: position })),
-    resetActiveTile: () => set(() => ({ id: null, position: new THREE.Vector3(0, 0, 0) }))
+    setHoveredTile: (id) => set(() => ({ id: id })),
+    resetActiveTile: () => set(() => ({ id: null }))
   }))
 }

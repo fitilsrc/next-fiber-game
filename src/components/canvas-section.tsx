@@ -13,6 +13,7 @@ import OceanModel from "@/features/terrain/components/ocean-model";
 import { ConiferForests } from "@/features/terrain/components/conifer-forests-model";
 import { DeciduousForests } from "@/features/terrain/components/deciduous-forests-model";
 import { InteractiveLayer } from "@/features/map/components/interactive-layer";
+import { HexagonalRadialMenu } from "./ui/hexa-radial-menu";
 
 export const CanvasSection = () => {
   console.log("start");
@@ -45,6 +46,7 @@ export const CanvasSection = () => {
         <axesHelper args={[40]} />
         <Perf position="top-left" matrixUpdate />
       </Canvas>
+      <HexagonalRadialMenu />
     </section>
   );
 };
