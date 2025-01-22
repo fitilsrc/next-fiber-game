@@ -3,10 +3,10 @@ import * as THREE from "three";
 
 import { MapControls, useHelper } from "@react-three/drei";
 import { useControls } from "leva";
-import { useActiveTileStore } from "./providers/active-tile-provider";
+import { useMapStore } from "./providers/map-provider";
 
 export const WorldEnvironment = () => {
-  const { position } = useActiveTileStore((state) => state)
+  const { cameraTarget } = useMapStore((state) => state)
   const dirLight = useRef<THREE.DirectionalLight>(null!);
 
   const options = useMemo(() => {
@@ -46,7 +46,7 @@ export const WorldEnvironment = () => {
         minDistance={10}
         maxDistance={100}
         maxPolarAngle={90}
-        target={position}
+        target={cameraTarget}
       />
     </>
   );

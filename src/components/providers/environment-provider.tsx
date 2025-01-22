@@ -33,7 +33,6 @@ interface EnvironmentState {
       animations: THREE.AnimationClip[];
     }
   >;
-  tiles: TileType[];
 }
 
 const EnvironmentContext = createContext<{
@@ -42,7 +41,6 @@ const EnvironmentContext = createContext<{
   state: {
     textures: {},
     models: {},
-    tiles: [],
   },
 });
 
@@ -74,8 +72,6 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     "/assets/models/pine-tree.glb",
     "/assets/models/rock-formation.glb",
   ]);
-
-  const tiles: TileType[] = generateTerrain(15);
 
   const models = useMemo(
     () => ({
@@ -114,7 +110,6 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
   const state: EnvironmentState = {
     textures,
     models,
-    tiles,
   };
 
   return (

@@ -2,13 +2,14 @@ import * as THREE from "three";
 import { Instance } from "@react-three/drei";
 
 import { HeightMapType, TileType } from "@/types";
+import { memo } from "react";
 
 interface TreesFormationProps {
   tile: TileType;
   heights: HeightMapType[];
 }
 
-export const TreesFormation = ({ tile, heights }: TreesFormationProps) => {
+const TreesFormation = memo(({ tile, heights }: TreesFormationProps) => {
   const [x, y, z] = tile.position;
   const position = new THREE.Vector3(
     (x + (z % 2) * 0.5) * 1.75,
@@ -30,4 +31,6 @@ export const TreesFormation = ({ tile, heights }: TreesFormationProps) => {
       })}
     </group>
   );
-};
+});
+
+export { TreesFormation };

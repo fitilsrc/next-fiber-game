@@ -1,4 +1,5 @@
 import { TerrainType } from "@/components/providers/environment-provider";
+import { BuildingType } from "@/types/building-type";
 
 export type HeightMapType = {
   x: number;
@@ -28,13 +29,6 @@ export enum PlantType {
 export enum EnvironmentType {
   ROCK = "ROCK",
   WATER = "WATER",
-}
-
-export enum BuildingType {
-  HOUSE = "HOUSE",
-  CASTLE = "CASTLE",
-  TOWER = "TOWER",
-  WINDMILL = "WINDMILL",
 }
 
 export enum AnimalType {

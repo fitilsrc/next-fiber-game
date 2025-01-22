@@ -5,10 +5,11 @@ import { useEnvironmentContext } from "@/components/providers/environment-provid
 import { PlantType } from "@/types";
 import { Instances } from "@react-three/drei";
 import { TreesFormation } from "./trees-formation";
-import { useMemo } from "react";
+import { useActionState, useMemo } from "react";
 import { extend, ShaderMaterialProps, useThree } from "@react-three/fiber";
 import { TreeMaterial, TreeUniforms } from "./materials/tree.material";
 import { heightMap } from "@/lib/generator";
+import { useMapStore } from "@/components/providers/map-provider";
 
 extend({ TreeMaterial });
 
@@ -23,9 +24,10 @@ declare global {
 
 export const ConiferForests = () => {
   const { state } = useEnvironmentContext();
+  const { map } = useMapStore(state => state);
   const { nodes } = state.models[PlantType.PINE_TREE];
 
-  const pineTreeForests = state.tiles.filter(
+  const pineTreeForests = map.filter(
     (tile) => tile.plant === PlantType.PINE_TREE
   );
 
@@ -57,7 +59,7 @@ export const ConiferForests = () => {
   );
   const [pineTreeTrunk] = geometries;
 
-  const heightsMap = heightMap(pineTreeForests);
+  const heightsMap = useMemo(() => heightMap(pineTreeForests), []);
 
   return (
     <group>

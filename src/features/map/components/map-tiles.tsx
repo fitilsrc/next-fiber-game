@@ -7,14 +7,16 @@ import {
 } from "@/components/providers/environment-provider";
 import { TileInstance } from "@/features/map/components/tile-instance";
 import { hexagon, hexagonFlat } from "@/features/map/components/geometry";
+import { useMapStore } from "@/components/providers/map-provider";
 
 export const MapTiles = () => {
   const { state } = useEnvironmentContext();
+  const { map } = useMapStore(store => store);
 
   return (
     <group>
       {[...Object.values(TerrainType)].map((type) => {
-        const tiles = state.tiles.filter((tile) => tile.type === type);
+        const tiles = map.filter((tile) => tile.type === type);
 
         return (
           <Fragment key={type}>
