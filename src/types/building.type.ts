@@ -11,5 +11,6 @@ export type BuildingType = {
   position: THREE.Vector3;
   type: BuildingsEnum;
   condition: number;
+  underConstruction?: boolean;
   ruined?: boolean;
 }
