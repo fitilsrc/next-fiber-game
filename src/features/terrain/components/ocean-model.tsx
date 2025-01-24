@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-export const OceanModel = () => {
+export const OceanModel = memo(() => {
   const texture = useLoader(THREE.TextureLoader, "/assets/textures/water.avif");
   const shader = useRef<THREE.ShaderMaterial & Partial<Uniforms>>(null);
 
@@ -49,6 +49,4 @@ export const OceanModel = () => {
       />
     </mesh>
   );
-};
-
-export default memo(OceanModel);
+});

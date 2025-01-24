@@ -1,27 +1,34 @@
 import React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { HexagonalButton } from "./hexa-button";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { BuildingsEnum, BuildingType } from "@/types";
 import { useMapStore } from "../providers/map-provider";
+import { prepareHexagonalCoordinates } from "@/lib/utils";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
 const HexagonalRadialMenu = () => {
-  const { active, resetActiveTile, constructBuilding } = useMapStore((state) => state);
+  const { active, resetActiveTile, constructBuilding } = useMapStore(
+    (state) => state
+  );
 
   const handleConstruct = () => {
-    const building: BuildingType = {
-      id: uuidv4(),
-      type: BuildingsEnum.TOWN_HALL,
-      condition: 0,
-    }
-
     if (active) {
-      constructBuilding(active, building);
+      const [x, y, z] = active.position;
+      const position = prepareHexagonalCoordinates(x, active.height, z)
+
+      const building: BuildingType = {
+        id: uuidv4(),
+        tileId: active.id,
+        position: position,
+        type: BuildingsEnum.TOWN_HALL,
+        condition: 0,
+      };
+      constructBuilding(building);
     }
     resetActiveTile();
-  }
+  };
 
   return (
     <div className="test">
@@ -43,7 +50,10 @@ const HexagonalRadialMenu = () => {
               </HexagonalButton>
             </DropdownMenuPrimitive.Item>
             <DropdownMenuPrimitive.Item className="focus-visible:outline-none absolute -left-[80%] bottom-1/4">
-              <HexagonalButton className="bg-white/30 text-white/30" onClick={handleConstruct}>
+              <HexagonalButton
+                className="bg-white/30 text-white/30"
+                onClick={handleConstruct}
+              >
                 <p className="text-rose-800">build</p>
               </HexagonalButton>
             </DropdownMenuPrimitive.Item>
@@ -53,7 +63,10 @@ const HexagonalRadialMenu = () => {
               </HexagonalButton>
             </DropdownMenuPrimitive.Item>
             <DropdownMenuPrimitive.Item className="mt-1 focus-visible:outline-none">
-              <HexagonalButton className="bg-white/30 text-white/30" onClick={resetActiveTile}>
+              <HexagonalButton
+                className="bg-white/30 text-white/30"
+                onClick={resetActiveTile}
+              >
                 <p className="text-rose-800">close</p>
               </HexagonalButton>
             </DropdownMenuPrimitive.Item>

@@ -4,9 +4,11 @@ import { useGLTF, useTexture } from "@react-three/drei";
 import { createContext, useContext, useMemo } from "react";
 import * as THREE from "three";
 
+const MAP_SIZE = 15;
+
 enum TerrainType {
-  SAND = "SAND",
   SAND_COAST = "SAND_COAST",
+  SAND = "SAND",
   GRASS = "GRASS",
   GRASS_FOREST = "GRASS_FOREST",
   GRASS_ROCKY = "GRASS_ROCKY",
@@ -24,6 +26,7 @@ enum Model {
 }
 
 interface EnvironmentState {
+  terrain: TileType[];
   textures: Record<string, THREE.Texture>;
   models: Record<
     string,
@@ -39,6 +42,7 @@ const EnvironmentContext = createContext<{
   state: EnvironmentState;
 }>({
   state: {
+    terrain: [],
     textures: {},
     models: {},
   },
@@ -107,7 +111,10 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     }), []
   )
 
+  const terrain = generateTerrain(MAP_SIZE);
+
   const state: EnvironmentState = {
+    terrain,
     textures,
     models,
   };

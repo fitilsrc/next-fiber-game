@@ -1,19 +1,18 @@
 "use client";
 
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense } from "react";
 
-import { Bounds, MapControls, OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Bounds } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
 
 import { EnvironmentProvider } from "./providers/environment-provider";
 import { WorldEnvironment } from "./world-environment";
-import { MapTiles } from "@/features/map/components/map-tiles";
-import OceanModel from "@/features/terrain/components/ocean-model";
-import { ConiferForests } from "@/features/terrain/components/conifer-forests-model";
-import { DeciduousForests } from "@/features/terrain/components/deciduous-forests-model";
-import { InteractiveLayer } from "@/features/map/components/interactive-layer";
+import { OceanModel } from "@/features/terrain/components/ocean-model";
 import { HexagonalRadialMenu } from "./ui/hexa-radial-menu";
+import { InteractiveLayer } from "@/features/map/components/interactive.layer";
+import { ForestsLayer } from "@/features/map/components/forests.layer";
+import { TerrainLayer } from "@/features/map/components/terrain.layer";
 
 export const CanvasSection = () => {
   console.log("start");
@@ -36,9 +35,8 @@ export const CanvasSection = () => {
               margin={4.5}
             >
               <OceanModel />
-              <MapTiles />
-              <ConiferForests />
-              <DeciduousForests />
+              <TerrainLayer />
+              <ForestsLayer />
               <InteractiveLayer />
             </Bounds>
           </Suspense>

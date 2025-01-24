@@ -2,12 +2,11 @@ import { useMapStore } from "@/components/providers/map-provider"
 import { BuildingModel } from "@/features/buildings/components/building-model";
 
 export const BuildingsLayer = () => {
-  const { map } = useMapStore(state => state);
-  const buildings = map.filter((tile) => !!tile.building)
+  const { buildings } = useMapStore(state => state);
 
   return (
     <group>
-      {buildings.map((tile) => <BuildingModel key={tile.id} tile={tile}/>)}
+      {buildings.map((building) => <BuildingModel key={building.id} building={building}/>)}
     </group>
   )
 }

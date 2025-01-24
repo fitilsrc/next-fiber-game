@@ -1,18 +1,12 @@
-import React from "react";
-
-import { TileType } from "@/types";
-import { prepareHexagonalCoordinates } from "@/lib/utils";
+import { BuildingType } from "@/types";
 
 interface BuildingModelProps {
-  tile: TileType;
+  building: BuildingType;
 }
 
-export const BuildingModel = ({ tile }: BuildingModelProps) => {
-  const [x, y, z] = tile.position;
-  const position = prepareHexagonalCoordinates(x, tile.height, z);
-
+export const BuildingModel = ({ building }: BuildingModelProps) => {
   return (
-    <group position={position}>
+    <group position={building.position}>
       <mesh>
         <boxGeometry args={[0.5, 0.5, 0.5]} />
         <meshStandardMaterial color="red" flatShading />

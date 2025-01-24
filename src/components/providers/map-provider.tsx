@@ -32,7 +32,7 @@ export const useMapStore = <T,>(
   const mapStoreContext = useContext(MapStoreContext)
 
   if (!mapStoreContext) {
-    throw new Error(`useCounterStore must be used within CounterStoreProvider`)
+    throw new Error(`useMapStore must be used within MapStoreProvider`)
   }
 
   return useStore(mapStoreContext, selector)

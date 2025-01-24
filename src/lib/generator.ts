@@ -134,7 +134,6 @@ export const generateTerrain = (radius: number): TileType[] => {
           height: height,
           type: type,
           plant: plant,
-          building: null,
           animal: animal,
           environment: environment,
         });

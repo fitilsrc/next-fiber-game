@@ -7,13 +7,11 @@ import { Instances } from "@react-three/drei";
 import { TreesFormation } from "./trees-formation";
 import { useMemo } from "react";
 import { heightMap } from "@/lib/generator";
-import { useMapStore } from "@/components/providers/map-provider";
 
 export const DeciduousForests = () => {
   const { state } = useEnvironmentContext();
-  const { map } = useMapStore(state => state);
 
-  const deciduousTreeForests = map.filter(
+  const deciduousTreeForests = state.terrain.filter(
     (tile) => tile.plant === PlantType.TREE
   );
   const { nodes } = state.models[PlantType.TREE];

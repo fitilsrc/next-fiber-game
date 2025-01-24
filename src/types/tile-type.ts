@@ -1,5 +1,4 @@
 import { TerrainType } from "@/components/providers/environment-provider";
-import { BuildingType } from "@/types/building-type";
 
 export type HeightMapType = {
   x: number;
@@ -15,7 +14,6 @@ export type TileType = {
   height: number;
   type: TerrainType;
   plant: PlantType | null;
-  building: BuildingType | null;
   animal: AnimalType | null;
   environment: EnvironmentType | null;
 }

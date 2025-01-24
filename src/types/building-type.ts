@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 export enum BuildingsEnum {
   TOWN_HALL = "TOWN_HALL",
   TOWER = "TOWER",
@@ -5,6 +7,8 @@ export enum BuildingsEnum {
 
 export type BuildingType = {
   id: string;
+  tileId: string;
+  position: THREE.Vector3;
   type: BuildingsEnum;
   condition: number;
   ruined?: boolean;

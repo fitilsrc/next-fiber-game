@@ -5,29 +5,15 @@ import { useEnvironmentContext } from "@/components/providers/environment-provid
 import { PlantType } from "@/types";
 import { Instances } from "@react-three/drei";
 import { TreesFormation } from "./trees-formation";
-import { useActionState, useMemo } from "react";
-import { extend, ShaderMaterialProps, useThree } from "@react-three/fiber";
-import { TreeMaterial, TreeUniforms } from "./materials/tree.material";
+import { useMemo } from "react";
 import { heightMap } from "@/lib/generator";
 import { useMapStore } from "@/components/providers/map-provider";
 
-extend({ TreeMaterial });
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      treeMaterial: ShaderMaterialProps & Partial<TreeUniforms>;
-    }
-  }
-}
-
-
 export const ConiferForests = () => {
   const { state } = useEnvironmentContext();
-  const { map } = useMapStore(state => state);
   const { nodes } = state.models[PlantType.PINE_TREE];
 
-  const pineTreeForests = map.filter(
+  const pineTreeForests = state.terrain.filter(
     (tile) => tile.plant === PlantType.PINE_TREE
   );
 
