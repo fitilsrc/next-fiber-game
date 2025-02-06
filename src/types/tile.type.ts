@@ -1,4 +1,18 @@
-import { TerrainType } from "@/components/providers/environment-provider";
+import * as THREE from "three";
+import { ResourcesEnum } from "./resource.type";
+
+export enum TerrainTypeEnum {
+  SAND_COAST = "SAND_COAST",
+  SAND = "SAND",
+  GRASS = "GRASS",
+  GRASS_FOREST = "GRASS_FOREST",
+  GRASS_ROCKY = "GRASS_ROCKY",
+  GRASS_BROWN = "GRASS_BROWN",
+  ROCK = "ROCK",
+  SNOW = "SNOW",
+};
+
+export type ResourceMapType = Record<TerrainTypeEnum, Array<{type: ResourcesEnum, probability: number}>>;
 
 export type HeightMapType = {
   x: number;
@@ -6,16 +20,13 @@ export type HeightMapType = {
   height: number;
 };
 
-
 export type TileType = {
   id: string;
   position: PositionType;
   color: string;
   height: number;
-  type: TerrainType;
-  plant: PlantType | null;
-  animal: AnimalType | null;
-  environment: EnvironmentType | null;
+  rotation: THREE.Euler;
+  type: TerrainTypeEnum;
 }
 
 export enum PlantType {

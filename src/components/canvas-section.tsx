@@ -11,8 +11,8 @@ import { WorldEnvironment } from "./world-environment";
 import { OceanModel } from "@/features/terrain/components/ocean-model";
 import { HexagonalRadialMenu } from "./ui/hexa-radial-menu";
 import { InteractiveLayer } from "@/features/map/components/interactive.layer";
-import { ForestsLayer } from "@/features/map/components/forests.layer";
 import { TerrainLayer } from "@/features/map/components/terrain.layer";
+import { ResourceLayer } from "@/features/map/components/resources.layer";
 
 export const CanvasSection = () => {
   console.log("start");
@@ -36,7 +36,7 @@ export const CanvasSection = () => {
             >
               <OceanModel />
               <TerrainLayer />
-              <ForestsLayer />
+              <ResourceLayer />
               <InteractiveLayer />
             </Bounds>
           </Suspense>

@@ -1,21 +1,7 @@
-import { generateTerrain } from "@/lib/generator";
-import { TileType } from "@/types";
+import { ModelEnum, TerrainTypeEnum } from "@/types";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { createContext, useContext, useMemo } from "react";
 import * as THREE from "three";
-
-const MAP_SIZE = 15;
-
-enum TerrainType {
-  SAND_COAST = "SAND_COAST",
-  SAND = "SAND",
-  GRASS = "GRASS",
-  GRASS_FOREST = "GRASS_FOREST",
-  GRASS_ROCKY = "GRASS_ROCKY",
-  GRASS_BROWN = "GRASS_BROWN",
-  ROCK = "ROCK",
-  SNOW = "SNOW",
-}
 
 enum Model {
   TREE = "TREE",
@@ -26,7 +12,6 @@ enum Model {
 }
 
 interface EnvironmentState {
-  terrain: TileType[];
   textures: Record<string, THREE.Texture>;
   models: Record<
     string,
@@ -42,7 +27,6 @@ const EnvironmentContext = createContext<{
   state: EnvironmentState;
 }>({
   state: {
-    terrain: [],
     textures: {},
     models: {},
   },
@@ -71,28 +55,67 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     "/assets/textures/snow.webp",
   ]);
 
-  const [tree, pineTree, rockFormation] = useGLTF([
+  const [
+    tree,
+    pineTree,
+    coalPineTree,
+    pineTreeStone,
+    meat,
+    woodGrassBrownPlane,
+    woodGrassForestPlane,
+    woodGrassRockyPlane,
+  ] = useGLTF([
     "/assets/models/tree.glb",
     "/assets/models/pine-tree.glb",
-    "/assets/models/rock-formation.glb",
+    "/assets/models/coal-pine-tree.glb",
+    "/assets/models/pine-tree-stone.glb",
+    "/assets/models/deer.glb",
+    "/assets/models/wood-grass-brown-plane.glb",
+    "/assets/models/wood-grass-forest-plane.glb",
+    "/assets/models/wood-grass-rocky-plane.glb",
   ]);
 
   const models = useMemo(
     () => ({
-      [Model.TREE]: {
+      [TerrainTypeEnum.GRASS_BROWN]: {
+        nodes: woodGrassBrownPlane.nodes,
+        materials: woodGrassBrownPlane.materials,
+        animations: woodGrassBrownPlane.animations,
+      },
+      [TerrainTypeEnum.GRASS_FOREST]: {
+        nodes: woodGrassForestPlane.nodes,
+        materials: woodGrassForestPlane.materials,
+        animations: woodGrassForestPlane.animations,
+      },
+      [TerrainTypeEnum.GRASS_ROCKY]: {
+        nodes: woodGrassRockyPlane.nodes,
+        materials: woodGrassRockyPlane.materials,
+        animations: woodGrassRockyPlane.animations,
+      },
+      [ModelEnum.MEAT]: {
+        nodes: meat.nodes,
+        materials: meat.materials,
+        animations: meat.animations,
+      },
+      [ModelEnum.TREE]: {
         nodes: tree.nodes,
         materials: tree.materials,
         animations: tree.animations,
       },
-      [Model.PINE_TREE]: {
+      [ModelEnum.PINE_TREE]: {
         nodes: pineTree.nodes,
         materials: pineTree.materials,
         animations: pineTree.animations,
       },
-      [Model.ROCK_FORMATION]: {
-        nodes: rockFormation.nodes,
-        materials: rockFormation.materials,
-        animations: rockFormation.animations,
+      [ModelEnum.COAL_PINE_TREE]: {
+        nodes: coalPineTree.nodes,
+        materials: coalPineTree.materials,
+        animations: coalPineTree.animations,
+      },
+      [ModelEnum.PINE_TREE_STONE]: {
+        nodes: pineTreeStone.nodes,
+        materials: pineTreeStone.materials,
+        animations: pineTreeStone.animations,
       },
     }),
     []
@@ -100,21 +123,19 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
 
   const textures = useMemo(
     () => ({
-      [TerrainType.SAND]: sand,
-      [TerrainType.SAND_COAST]: sand_coast,
-      [TerrainType.GRASS]: grass,
-      [TerrainType.GRASS_FOREST]: grass_forest,
-      [TerrainType.GRASS_ROCKY]: grass_rocky,
-      [TerrainType.GRASS_BROWN]: grass_brown,
-      [TerrainType.ROCK]: rock,
-      [TerrainType.SNOW]: snow,
-    }), []
-  )
-
-  const terrain = generateTerrain(MAP_SIZE);
+      [TerrainTypeEnum.SAND]: sand,
+      [TerrainTypeEnum.SAND_COAST]: sand_coast,
+      [TerrainTypeEnum.GRASS]: grass,
+      [TerrainTypeEnum.GRASS_FOREST]: grass_forest,
+      [TerrainTypeEnum.GRASS_ROCKY]: grass_rocky,
+      [TerrainTypeEnum.GRASS_BROWN]: grass_brown,
+      [TerrainTypeEnum.ROCK]: rock,
+      [TerrainTypeEnum.SNOW]: snow,
+    }),
+    []
+  );
 
   const state: EnvironmentState = {
-    terrain,
     textures,
     models,
   };
@@ -129,7 +150,9 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
 useGLTF.preload([
   "/assets/models/tree.glb",
   "/assets/models/pine-tree.glb",
-  "/assets/models/rock-formation.glb",
+  "/assets/models/coal-pine-tree.glb",
+  "/assets/models/pine-tree-stone.glb",
+  "/assets/models/deer.glb",
 ]);
 
-export { useEnvironmentContext, EnvironmentProvider, TerrainType, Model };
+export { useEnvironmentContext, EnvironmentProvider };

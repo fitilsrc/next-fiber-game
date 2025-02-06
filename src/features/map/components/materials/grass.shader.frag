@@ -8,7 +8,7 @@ uniform vec3 uDirLightColor;
 uniform vec3 uAmbientLightColor;
 
 void main() {
-  vec2 uv;
+  //vec2 uv;
   vec3 normal = normalize(vNormal);
   vec3 uDirLightPos = vec3(55.0, 55.0, 0.0);
 
@@ -25,9 +25,11 @@ void main() {
     finalColor = uColor * 2.8;
   }
 
-  if (normal.y > 0.9) {
-    finalColor = texture2D(uTexture, vUv).rgb * 2.5 ;
-  }
+  float clarity = ( vUv.y * 0.875 ) + 0.125;
+
+  //if (normal.y > 0.9) {
+  //  finalColor = texture2D(uTexture, vUv).rgb * 2.5 ;
+  //}
 
   gl_FragColor = vec4(finalColor, 1.0);
 }

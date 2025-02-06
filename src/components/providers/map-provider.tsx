@@ -3,7 +3,10 @@
 import { createContext, useContext, useRef } from "react";
 import { useStore } from "zustand";
 
-import { createMapStore, initMapStore, type MapStore } from "@/stores/map-store";
+import { createMapStore, initMapStore, type MapStore } from "@/stores/map.store";
+import { generateTerrain } from "@/lib/generator";
+
+const MAP_SIZE = 15;
 
 export type MapStoreApi = ReturnType<typeof createMapStore>
 
@@ -14,9 +17,15 @@ export const MapStoreContext = createContext<MapStoreApi | undefined>(
 export const MapStoreProvider = ({
   children,
 }: { children: React.ReactNode }) => {
-  const storeRef = useRef<MapStoreApi>()
+  const storeRef = useRef<MapStoreApi>(null!)
+
+  const {terrain, resources} = generateTerrain(MAP_SIZE);
+
   if (!storeRef.current) {
-    storeRef.current = createMapStore(initMapStore())
+    storeRef.current = createMapStore(initMapStore(
+      terrain,
+      resources
+    ))
   }
 
   return (

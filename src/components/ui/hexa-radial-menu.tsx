@@ -3,20 +3,20 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { HexagonalButton } from "./hexa-button";
 import { v4 as uuidv4 } from "uuid";
 import { BuildingsEnum, BuildingType } from "@/types";
-import { useMapStore } from "../providers/map-provider";
 import { prepareHexagonalCoordinates } from "@/lib/utils";
+import { useActiveTileStore } from "@/stores/active-tile.store";
+import { useBuildingsStore } from "@/stores/buildings.store";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
 const HexagonalRadialMenu = () => {
-  const { active, resetActiveTile, constructBuilding } = useMapStore(
-    (state) => state
-  );
+  const { constructBuilding } = useBuildingsStore((state) => state);
+  const { active, resetActiveTile } = useActiveTileStore((state) => state);
 
   const handleConstruct = () => {
     if (active) {
       const [x, y, z] = active.position;
-      const position = prepareHexagonalCoordinates(x, active.height, z)
+      const position = prepareHexagonalCoordinates(x, active.height, z);
 
       const building: BuildingType = {
         id: uuidv4(),
@@ -24,11 +24,14 @@ const HexagonalRadialMenu = () => {
         position: position,
         type: BuildingsEnum.TOWN_HALL,
         condition: 0,
+        isUnderConstruction: true,
       };
       constructBuilding(building);
     }
     resetActiveTile();
   };
+
+  console.log("menu");
 
   return (
     <div className="test">
