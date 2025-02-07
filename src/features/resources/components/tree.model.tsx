@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Instance, Instances } from "@react-three/drei";
 
 import { useEnvironmentContext } from "@/components/providers/environment-provider";
 import { ModelEnum, TileResourcesType } from "@/types";
@@ -9,29 +10,20 @@ export const TreeModel = ({ tiles }: { tiles: TileResourcesType[] }) => {
 
   return (
     <group dispose={null}>
-      {tiles.map((tile) => (
-        <group
-          key={tile.id}
-          dispose={null}
-          position={tile.position}
-          rotation={tile.rotation}
-        >
-          {Object.values(nodes).map((node) => {
-            if (node instanceof THREE.Mesh) {
-              return (
-                <mesh
-                  key={node.uuid}
-                  geometry={node.geometry}
-                  position={node.position}
-                  scale={node.scale}
-                >
-                  <meshToonMaterial {...materials[node.material.name]} />
-                </mesh>
-              );
-            }
-          })}
-        </group>
-      ))}
+      <group dispose={null}>
+        {nodes.tree instanceof THREE.Mesh && (
+          <Instances geometry={nodes.tree.geometry}>
+            <meshToonMaterial {...materials[nodes.tree.material.name]} />
+            {tiles.map((tile) => (
+              <Instance
+                key={tile.id}
+                position={tile.position}
+                rotation={tile.rotation}
+              />
+            ))}
+          </Instances>
+        )}
+      </group>
     </group>
   );
 };

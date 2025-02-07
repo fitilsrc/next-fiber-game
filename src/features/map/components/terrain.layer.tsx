@@ -68,7 +68,7 @@ export const TerrainLayer = () => {
                 );
                 const topPosition = prepareHexagonalCoordinates(
                   x,
-                  tile.height + 0.009,
+                  tile.height + 0.005,
                   z
                 );
                 return (
