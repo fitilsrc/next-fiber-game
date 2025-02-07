@@ -14,12 +14,6 @@ export enum TerrainTypeEnum {
 
 export type ResourceMapType = Record<TerrainTypeEnum, Array<{type: ResourcesEnum, probability: number}>>;
 
-export type HeightMapType = {
-  x: number;
-  y: number;
-  height: number;
-};
-
 export type TileType = {
   id: string;
   position: PositionType;

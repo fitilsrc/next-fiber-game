@@ -64,6 +64,7 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     woodGrassBrownPlane,
     woodGrassForestPlane,
     woodGrassRockyPlane,
+    snowPlain,
   ] = useGLTF([
     "/assets/models/tree.glb",
     "/assets/models/pine-tree.glb",
@@ -73,10 +74,16 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     "/assets/models/wood-grass-brown-plane.glb",
     "/assets/models/wood-grass-forest-plane.glb",
     "/assets/models/wood-grass-rocky-plane.glb",
+    "/assets/models/snow-plain.glb",
   ]);
 
   const models = useMemo(
     () => ({
+      [TerrainTypeEnum.SNOW]: {
+        nodes: snowPlain.nodes,
+        materials: snowPlain.materials,
+        animations: snowPlain.animations,
+      },
       [TerrainTypeEnum.GRASS_BROWN]: {
         nodes: woodGrassBrownPlane.nodes,
         materials: woodGrassBrownPlane.materials,

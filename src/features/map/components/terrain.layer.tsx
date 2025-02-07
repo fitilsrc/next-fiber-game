@@ -14,6 +14,7 @@ import {
   GrassForestPlainModel,
   GrassRockyPlainModel,
 } from "@/features/resources/components";
+import { SnowPlainModel } from "@/features/terrain/components/snow-plain.model";
 
 extend({ GrassMaterial });
 
@@ -36,7 +37,7 @@ const colors = [
   // "#57483A",
   "#756308",
   "#796B58",
-  "#7A7D86",
+  "#97A6A2", //snow
 ];
 
 export const TerrainLayer = () => {
@@ -60,6 +61,9 @@ export const TerrainLayer = () => {
             )}
             {type === TerrainTypeEnum.GRASS_ROCKY && (
               <GrassRockyPlainModel tiles={tiles} />
+            )}
+            {type === TerrainTypeEnum.SNOW && (
+              <SnowPlainModel tiles={tiles} />
             )}
             <Instances geometry={hexagon}>
               <grassMaterial

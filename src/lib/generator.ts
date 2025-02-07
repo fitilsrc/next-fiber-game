@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
 import {
-  HeightMapType,
   ModelEnum,
   ResourceMapType,
   ResourcesEnum,
