@@ -16,26 +16,23 @@ export const AnimalModel = ({ tiles }: { tiles: TileResourcesType[] }) => {
           position={tile.position}
           rotation={tile.rotation}
         >
-          <group scale={0.079}>
-            <primitive object={nodes.Bone001} />
-            <primitive object={nodes.Bone022} />
-            <primitive object={nodes.Bone023} />
-            <primitive object={nodes.Bone031} />
-            <primitive object={nodes.Bone033} />
-
-            {
-              Object.values(nodes).map((node: THREE.Object3D) => {
-                if (node instanceof THREE.SkinnedMesh) {
-                  return <skinnedMesh
-                    key={node.uuid}
-                    geometry={node.geometry}
-                    material={materials[node.material.name]}
-                    skeleton={node.skeleton}
+          {Object.values(nodes).map((node) => {
+            if (node instanceof THREE.Mesh) {
+              return (
+                <mesh
+                  key={node.uuid}
+                  geometry={node.geometry}
+                  position={node.position}
+                  scale={node.scale}
+                >
+                  <meshStandardMaterial
+                    {...materials[node.material.name]}
+                    flatShading
                   />
-                }
-              })
+                </mesh>
+              );
             }
-          </group>
+          })}
         </group>
       ))}
     </group>

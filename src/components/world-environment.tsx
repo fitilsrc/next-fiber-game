@@ -43,7 +43,7 @@ export const WorldEnvironment = () => {
         shadow-camera-far={100}
       />
       <MapControls
-        minDistance={10}
+        minDistance={5}
         maxDistance={100}
         maxPolarAngle={90}
         target={cameraTarget}

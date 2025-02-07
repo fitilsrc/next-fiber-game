@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import { useEnvironmentContext } from "@/components/providers/environment-provider";
 import { ModelEnum, TileResourcesType } from "@/types";
+import { Instance, Instances } from "@react-three/drei";
 
 export const PineTreeModel = ({ tiles }: { tiles: TileResourcesType[] }) => {
   const { state } = useEnvironmentContext();
@@ -9,29 +10,18 @@ export const PineTreeModel = ({ tiles }: { tiles: TileResourcesType[] }) => {
 
   return (
     <group dispose={null}>
-      {tiles.map((tile) => (
-        <group
-          key={tile.id}
-          dispose={null}
-          position={tile.position}
-          rotation={tile.rotation}
-        >
-          {Object.values(nodes).map((node) => {
-            if (node instanceof THREE.Mesh) {
-              return (
-                <mesh
-                  key={node.uuid}
-                  geometry={node.geometry}
-                  position={node.position}
-                  scale={node.scale}
-                >
-                  <meshToonMaterial {...materials[node.material.name]} />
-                </mesh>
-              );
-            }
-          })}
-        </group>
-      ))}
+      {nodes.pine_tree instanceof THREE.Mesh && (
+        <Instances geometry={nodes.pine_tree.geometry}>
+          <meshToonMaterial {...materials[nodes.pine_tree.material.name]} />
+          {tiles.map((tile) => (
+            <Instance
+              key={tile.id}
+              position={tile.position}
+              rotation={tile.rotation}
+            />
+          ))}
+        </Instances>
+      )}
     </group>
   );
 };
