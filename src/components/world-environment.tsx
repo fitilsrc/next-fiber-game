@@ -44,7 +44,7 @@ export const WorldEnvironment = () => {
       />
       <MapControls
         minDistance={5}
-        maxDistance={100}
+        maxDistance={80}
         maxPolarAngle={90}
         target={cameraTarget}
       />

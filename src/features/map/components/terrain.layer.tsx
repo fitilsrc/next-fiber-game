@@ -52,6 +52,15 @@ export const TerrainLayer = () => {
 
         return (
           <Fragment key={type}>
+            {type === TerrainTypeEnum.GRASS_FOREST && (
+              <GrassForestPlainModel tiles={tiles} />
+            )}
+            {type === TerrainTypeEnum.GRASS_BROWN && (
+              <GrassBrownPlainModel tiles={tiles} />
+            )}
+            {type === TerrainTypeEnum.GRASS_ROCKY && (
+              <GrassRockyPlainModel tiles={tiles} />
+            )}
             <Instances geometry={hexagon}>
               <grassMaterial
                 uColor={new THREE.Color(colors[index])}
@@ -73,21 +82,6 @@ export const TerrainLayer = () => {
                 );
                 return (
                   <Fragment key={tile.id}>
-                    {tile.type === TerrainTypeEnum.GRASS_FOREST && (
-                      <group position={topPosition} rotation={tile.rotation}>
-                        <GrassForestPlainModel />
-                      </group>
-                    )}
-                    {tile.type === TerrainTypeEnum.GRASS_BROWN && (
-                      <group position={topPosition} rotation={tile.rotation}>
-                        <GrassBrownPlainModel />
-                      </group>
-                    )}
-                    {tile.type === TerrainTypeEnum.GRASS_ROCKY && (
-                      <group position={topPosition} rotation={tile.rotation}>
-                        <GrassRockyPlainModel />
-                      </group>
-                    )}
                     <Instance
                       position={position}
                       scale={new THREE.Vector3(1, Math.abs(tile.height), 1)}

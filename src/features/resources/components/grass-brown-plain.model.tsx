@@ -1,29 +1,43 @@
 import * as THREE from "three";
 
 import { useEnvironmentContext } from "@/components/providers/environment-provider";
-import { TerrainTypeEnum } from "@/types";
+import { TerrainTypeEnum, TileType } from "@/types";
+import { Instance, Instances } from "@react-three/drei";
+import { prepareHexagonalCoordinates } from "@/lib/utils";
 
-export const GrassBrownPlainModel = () => {
+export interface GrassBrownPlainModelProps {
+  tiles: TileType[];
+}
+
+export const GrassBrownPlainModel = ({
+  tiles,
+}: GrassBrownPlainModelProps) => {
   const { state } = useEnvironmentContext();
   const { nodes, materials } =
     state.models[TerrainTypeEnum.GRASS_BROWN];
 
   return (
     <>
-      {Object.values(nodes).map((node) => {
-        if (node instanceof THREE.Mesh) {
-          return (
-            <mesh
-              key={node.uuid}
-              geometry={node.geometry}
-              position={node.position}
-              scale={node.scale}
-            >
-              <meshToonMaterial {...materials[node.material.name]} />
-            </mesh>
-          )
-        }
-      })}
+      {nodes.plane instanceof THREE.Mesh && (
+        <Instances geometry={nodes.plane.geometry}>
+          <meshToonMaterial {...materials[nodes.plane.material.name]} />
+          {tiles.map((tile: TileType) => {
+            const [x, y, z] = tile.position;
+            const position = prepareHexagonalCoordinates(
+              x,
+              tile.height + 0.005,
+              z
+            );
+            return (
+              <Instance
+                key={tile.id}
+                position={position}
+                rotation={tile.rotation}
+              />
+            );
+          })}
+        </Instances>
+      )}
     </>
   )
 }
