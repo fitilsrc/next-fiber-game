@@ -12,7 +12,7 @@ enum Model {
 }
 
 interface EnvironmentState {
-  textures: Record<string, THREE.Texture>;
+  // textures: Record<string, THREE.Texture>;
   models: Record<
     string,
     {
@@ -27,7 +27,7 @@ const EnvironmentContext = createContext<{
   state: EnvironmentState;
 }>({
   state: {
-    textures: {},
+    // textures: {},
     models: {},
   },
 });
@@ -35,25 +35,25 @@ const EnvironmentContext = createContext<{
 const useEnvironmentContext = () => useContext(EnvironmentContext);
 
 function EnvironmentProvider({ children }: { children: React.ReactNode }) {
-  const [
-    sand,
-    sand_coast,
-    grass,
-    grass_forest,
-    grass_rocky,
-    grass_brown,
-    rock,
-    snow,
-  ] = useTexture([
-    "/assets/textures/sand.webp",
-    "/assets/textures/sand_coast.webp",
-    "/assets/textures/grass.webp",
-    "/assets/textures/grass_forest.webp",
-    "/assets/textures/grass_rocky.webp",
-    "/assets/textures/grass_brown.webp",
-    "/assets/textures/rock.webp",
-    "/assets/textures/snow.webp",
-  ]);
+  // const [
+  //   sand,
+  //   sand_coast,
+  //   grass,
+  //   grass_forest,
+  //   grass_rocky,
+  //   grass_brown,
+  //   rock,
+  //   snow,
+  // ] = useTexture([
+  //   "/assets/textures/sand.webp",
+  //   "/assets/textures/sand_coast.webp",
+  //   "/assets/textures/grass.webp",
+  //   "/assets/textures/grass_forest.webp",
+  //   "/assets/textures/grass_rocky.webp",
+  //   "/assets/textures/grass_brown.webp",
+  //   "/assets/textures/rock.webp",
+  //   "/assets/textures/snow.webp",
+  // ]);
 
   const [
     tree,
@@ -61,33 +61,68 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     coalPineTree,
     pineTreeStone,
     meat,
-    woodGrassBrownPlane,
+    grassBrownPlain,
     woodGrassForestPlane,
     woodGrassRockyPlane,
     snowPlain,
+    coal,
+    grassPlain,
+    rockyPlain,
+    sandCoastPlain,
+    sandPlain,
   ] = useGLTF([
     "/assets/models/tree.glb",
     "/assets/models/pine-tree.glb",
     "/assets/models/coal-pine-tree.glb",
     "/assets/models/pine-tree-stone.glb",
     "/assets/models/deer.glb",
-    "/assets/models/wood-grass-brown-plane.glb",
+    "/assets/models/grass-brown-plain.glb",
     "/assets/models/wood-grass-forest-plane.glb",
     "/assets/models/wood-grass-rocky-plane.glb",
     "/assets/models/snow-plain.glb",
+    "/assets/models/coal.glb",
+    "/assets/models/grass.glb",
+    "/assets/models/rock.glb",
+    "/assets/models/sand-coast-plain.glb",
+    "/assets/models/sand-plain.glb",
   ]);
 
   const models = useMemo(
     () => ({
+      [TerrainTypeEnum.SAND]: {
+        nodes: sandPlain.nodes,
+        materials: sandPlain.materials,
+        animations: sandPlain.animations,
+      },
+      [TerrainTypeEnum.SAND_COAST]: {
+        nodes: sandCoastPlain.nodes,
+        materials: sandCoastPlain.materials,
+        animations: sandCoastPlain.animations,
+      },
+      [TerrainTypeEnum.ROCK]: {
+        nodes: rockyPlain.nodes,
+        materials: rockyPlain.materials,
+        animations: rockyPlain.animations,
+      },
+      [TerrainTypeEnum.GRASS]: {
+        nodes: grassPlain.nodes,
+        materials: grassPlain.materials,
+        animations: grassPlain.animations,
+      },
+      [ModelEnum.COAL]: {
+        nodes: coal.nodes,
+        materials: coal.materials,
+        animations: coal.animations,
+      },
       [TerrainTypeEnum.SNOW]: {
         nodes: snowPlain.nodes,
         materials: snowPlain.materials,
         animations: snowPlain.animations,
       },
       [TerrainTypeEnum.GRASS_BROWN]: {
-        nodes: woodGrassBrownPlane.nodes,
-        materials: woodGrassBrownPlane.materials,
-        animations: woodGrassBrownPlane.animations,
+        nodes: grassBrownPlain.nodes,
+        materials: grassBrownPlain.materials,
+        animations: grassBrownPlain.animations,
       },
       [TerrainTypeEnum.GRASS_FOREST]: {
         nodes: woodGrassForestPlane.nodes,
@@ -128,22 +163,22 @@ function EnvironmentProvider({ children }: { children: React.ReactNode }) {
     []
   );
 
-  const textures = useMemo(
-    () => ({
-      [TerrainTypeEnum.SAND]: sand,
-      [TerrainTypeEnum.SAND_COAST]: sand_coast,
-      [TerrainTypeEnum.GRASS]: grass,
-      [TerrainTypeEnum.GRASS_FOREST]: grass_forest,
-      [TerrainTypeEnum.GRASS_ROCKY]: grass_rocky,
-      [TerrainTypeEnum.GRASS_BROWN]: grass_brown,
-      [TerrainTypeEnum.ROCK]: rock,
-      [TerrainTypeEnum.SNOW]: snow,
-    }),
-    []
-  );
+  // const textures = useMemo(
+  //   () => ({
+  //     [TerrainTypeEnum.SAND]: sand,
+  //     [TerrainTypeEnum.SAND_COAST]: sand_coast,
+  //     [TerrainTypeEnum.GRASS]: grass,
+  //     [TerrainTypeEnum.GRASS_FOREST]: grass_forest,
+  //     [TerrainTypeEnum.GRASS_ROCKY]: grass_rocky,
+  //     [TerrainTypeEnum.GRASS_BROWN]: grass_brown,
+  //     [TerrainTypeEnum.ROCK]: rock,
+  //     [TerrainTypeEnum.SNOW]: snow,
+  //   }),
+  //   []
+  // );
 
   const state: EnvironmentState = {
-    textures,
+    // textures,
     models,
   };
 
@@ -160,6 +195,12 @@ useGLTF.preload([
   "/assets/models/coal-pine-tree.glb",
   "/assets/models/pine-tree-stone.glb",
   "/assets/models/deer.glb",
+  "/assets/models/grass.glb",
+  "/assets/models/rock.glb",
+  "/assets/models/snow-plain.glb",
+  "/assets/models/sand-plain.glb",
+  "/assets/models/sand-coast-plain.glb",
+
 ]);
 
 export { useEnvironmentContext, EnvironmentProvider };

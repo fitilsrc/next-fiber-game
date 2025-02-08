@@ -1,20 +1,29 @@
+import * as THREE from "three";
 import { Instance, Instances } from "@react-three/drei";
 
-import { useMapStore } from "@/components/providers/map-provider";
-import { ModelEnum } from "@/types";
+import { useEnvironmentContext } from "@/components/providers/environment-provider";
+import { ModelEnum, TileResourcesType } from "@/types";
 
-export const CoalModel = () => {
-  const { resources } = useMapStore((state) => state);
+export const CoalModel = ({ tiles }: { tiles: TileResourcesType[] }) => {
+  const { state } = useEnvironmentContext();
+  const { nodes, materials } = state.models[ModelEnum.COAL];
 
-  const coal = resources.filter((r) => r.model === ModelEnum.COAL);
 
+  console.log(tiles.length);
   return (
-    <Instances>
-      <boxGeometry args={[0.5, 0.5, 0.5]} />
-      <meshStandardMaterial color={"#0a0700"} />
-      {coal.map((c) => (
-        <Instance key={c.id} position={c.position} />
-      ))}
-    </Instances>
-  )
-}
+    <group dispose={null}>
+      {nodes.rock instanceof THREE.Mesh && (
+        <Instances geometry={nodes.rock.geometry}>
+          <meshToonMaterial {...materials[nodes.rock.material.name]} />
+          {tiles.map((tile) => (
+            <Instance
+              key={tile.id}
+              position={tile.position}
+              rotation={tile.rotation}
+            />
+          ))}
+        </Instances>
+      )}
+    </group>
+  );
+};

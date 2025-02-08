@@ -8,8 +8,6 @@ export const DummyModel = ({ model }: { model: ModelEnum }) => {
 
   const dummy = resources.filter((r) => r.model === model);
 
-  console.log(model)
-
   return (
     <Instances>
       <boxGeometry args={[0.5, 0.5, 0.5]} />

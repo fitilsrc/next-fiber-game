@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { ResourcesEnum } from "./resource.type";
 
 export enum TerrainTypeEnum {
-  SAND_COAST = "SAND_COAST",
   SAND = "SAND",
+  SAND_COAST = "SAND_COAST",
   GRASS = "GRASS",
   GRASS_FOREST = "GRASS_FOREST",
   GRASS_ROCKY = "GRASS_ROCKY",

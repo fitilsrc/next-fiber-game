@@ -29,7 +29,7 @@ declare global {
 
 const ModelMap = {
   [ModelEnum.COAL]: CoalModel,
-  [ModelEnum.CLAY_SAND]: DummyModel,
+  [ModelEnum.CLAY]: DummyModel,
   [ModelEnum.IRON]: DummyModel,
   [ModelEnum.STONE]: DummyModel,
   [ModelEnum.TREE]: TreeModel,
@@ -54,6 +54,8 @@ export const ResourceLayer = () => {
       {Object.values(ModelEnum).map((model) => {
         const ModelComponent = ModelMap[model];
         const tiles = resources.filter((resource) => resource.model === model);
+
+        console.log(model, tiles.length)
 
         return <ModelComponent key={model} model={model} tiles={tiles} />;
       })}

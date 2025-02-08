@@ -33,7 +33,7 @@ export enum ModelEnum {
   TREE = "TREE",
   PINE_TREE = "PINE_TREE",
   MEAT = "MEAT",
-  CLAY_SAND = "CLAY_SAND",
+  CLAY = "CLAY",
   COAL_IRON = "COAL_IRON",
   IRON_STONE = "IRON_STONE",
   MEAT_TREE = "MEAT_TREE",

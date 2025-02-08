@@ -5,6 +5,3 @@ export * from "./pine-tree.model";
 export * from "./pine-tree-stone.model";
 export * from "./tree.model";
 export * from "./animal.model";
-export * from "./grass-forest-plain.model";
-export * from "./grass-brown-plain.model";
-export * from "./grass-rocky-plain.model";

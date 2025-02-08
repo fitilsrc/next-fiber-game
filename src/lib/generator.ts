@@ -88,14 +88,14 @@ const ResourceToTerrainMap: ResourceMapType = {
     }
   ],
 
-  [TerrainTypeEnum.SAND]: [
+  [TerrainTypeEnum.SAND_COAST]: [
     {
       type: ResourcesEnum.CLAY,
       probability: 10
     }
   ],
 
-  [TerrainTypeEnum.SAND_COAST]: [
+  [TerrainTypeEnum.SAND]: [
 
   ],
 
@@ -184,12 +184,12 @@ function generateTerrainType(height: number) {
     case isNumberInRange(height, 0, 1) || height < 0:
       return {
         color: "#798190",
-        type: TerrainTypeEnum.SAND_COAST,
+        type: TerrainTypeEnum.SAND,
       };
     case isNumberInRange(height, 1, 2):
       return {
         color: "#6C6E6F",
-        type: TerrainTypeEnum.SAND,
+        type: TerrainTypeEnum.SAND_COAST,
       };
     case isNumberInRange(height, 2, 3):
       return {

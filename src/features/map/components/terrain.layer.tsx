@@ -12,9 +12,13 @@ import { useShallow } from "zustand/shallow";
 import {
   GrassBrownPlainModel,
   GrassForestPlainModel,
+  GrassPlainModel,
   GrassRockyPlainModel,
-} from "@/features/resources/components";
-import { SnowPlainModel } from "@/features/terrain/components/snow-plain.model";
+  RockyPlainModel,
+  SandCoastPlainModel,
+  SandPlainModel,
+  SnowPlainModel,
+} from "@/features/terrain/components";
 
 extend({ GrassMaterial });
 
@@ -27,18 +31,26 @@ declare global {
 }
 
 const colors = [
-  "#798190",
-  "#77644C", //coastal sand
-
+  "#9e905e",
+  "#897016", //coastal sand
   "#635b13",
   "#756308", //forrest
   "#756308", //forrest
-  // "#575e07",
-  // "#57483A",
   "#756308",
-  "#796B58",
+  "#696b66",
   "#97A6A2", //snow
 ];
+
+const terrainMap = {
+  [TerrainTypeEnum.GRASS_FOREST]: GrassForestPlainModel,
+  [TerrainTypeEnum.GRASS_BROWN]: GrassBrownPlainModel,
+  [TerrainTypeEnum.GRASS_ROCKY]: GrassRockyPlainModel,
+  [TerrainTypeEnum.SNOW]: SnowPlainModel,
+  [TerrainTypeEnum.GRASS]: GrassPlainModel,
+  [TerrainTypeEnum.ROCK]: RockyPlainModel,
+  [TerrainTypeEnum.SAND_COAST]: SandCoastPlainModel,
+  [TerrainTypeEnum.SAND]: SandPlainModel,
+}
 
 export const TerrainLayer = () => {
   const { state } = useEnvironmentContext();
@@ -53,18 +65,7 @@ export const TerrainLayer = () => {
 
         return (
           <Fragment key={type}>
-            {type === TerrainTypeEnum.GRASS_FOREST && (
-              <GrassForestPlainModel tiles={tiles} />
-            )}
-            {type === TerrainTypeEnum.GRASS_BROWN && (
-              <GrassBrownPlainModel tiles={tiles} />
-            )}
-            {type === TerrainTypeEnum.GRASS_ROCKY && (
-              <GrassRockyPlainModel tiles={tiles} />
-            )}
-            {type === TerrainTypeEnum.SNOW && (
-              <SnowPlainModel tiles={tiles} />
-            )}
+            {terrainMap[type] && terrainMap[type]({ tiles })}
             <Instances geometry={hexagon}>
               <grassMaterial
                 uColor={new THREE.Color(colors[index])}

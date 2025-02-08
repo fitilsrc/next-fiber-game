@@ -5,16 +5,16 @@ import { TerrainTypeEnum, TileType } from "@/types";
 import { Instance, Instances } from "@react-three/drei";
 import { prepareHexagonalCoordinates } from "@/lib/utils";
 
-export interface GrassRockyPlainModelProps {
+export interface GrassBrownPlainModelProps {
   tiles: TileType[];
 }
 
-export const GrassRockyPlainModel = ({
+export const GrassBrownPlainModel = ({
   tiles,
-}: GrassRockyPlainModelProps) => {
+}: GrassBrownPlainModelProps) => {
   const { state } = useEnvironmentContext();
   const { nodes, materials } =
-    state.models[TerrainTypeEnum.GRASS_ROCKY];
+    state.models[TerrainTypeEnum.GRASS_BROWN];
 
   return (
     <>
